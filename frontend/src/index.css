@@ -1,12 +1,13 @@
 
-@tailwind base;
-
-@tailwind components;
-
-@tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* stylelint-disable at-rule-no-unknown */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* stylelint-enable at-rule-no-unknown */
+
+/* stylelint-disable at-rule-no-unknown */
 @layer base {
   html {
     font-family: 'Inter', system-ui, sans-serif;
@@ -19,7 +20,7 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
   }
   
   .btn-secondary {
@@ -27,7 +28,7 @@
   }
   
   .btn-danger {
-    @apply bg-danger-600 hover:bg-danger-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-danger-500 focus:ring-offset-2;
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
   }
 
   .card {
@@ -35,7 +36,7 @@
   }
 
   .input {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500;
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500;
   }
 
   .badge {
@@ -43,18 +44,19 @@
   }
 
   .badge-success {
-    @apply badge bg-secondary-100 text-secondary-800;
+    @apply bg-green-100 text-green-800;
   }
 
   .badge-warning {
-    @apply badge bg-accent-100 text-accent-800;
+    @apply bg-yellow-100 text-yellow-800;
   }
 
   .badge-danger {
-    @apply badge bg-danger-100 text-danger-800;
+    @apply bg-red-100 text-red-800;
   }
 
   .badge-info {
-    @apply badge bg-primary-100 text-primary-800;
+    @apply bg-blue-100 text-blue-800;
   }
 }
+/* stylelint-enable at-rule-no-unknown */

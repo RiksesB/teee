@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   CogIcon,
   BellIcon,
-  SecurityIcon,
-  DatabaseIcon,
+  ShieldCheckIcon,
+  CircleStackIcon,
   PhoneIcon,
   CloudIcon,
   CheckCircleIcon,
@@ -308,7 +308,7 @@ export function Settings() {
         <div className="card">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center">
-              <DatabaseIcon className="h-6 w-6 text-blue-600 mr-2" />
+              <CircleStackIcon className="h-6 w-6 text-blue-600 mr-2" />
               <h3 className="text-lg font-medium text-gray-900">
                 Base de Datos
               </h3>
