@@ -1,11 +1,56 @@
-# React + Vite
+# 🚀 Niblion - Plataforma de Concienciación en Ciberseguridad
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📋 Resumen
 
-Currently, two official plugins are available:
+Niblion es un SaaS B2B que permite a empresas capacitar a sus empleados en ciberseguridad a través de WhatsApp, combinando cursos educativos con simulaciones de phishing usando Gophish.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ✨ Características Principales
+
+- 🔐 **Sistema de roles**: Admin y Cliente con permisos diferenciados
+- 💰 **Pago por persona**: $5.99 USD o Bs. 220 VES por empleado
+- 💳 **Múltiples métodos de pago**: PayPal, Pago Móvil, Transferencia Bancaria
+- 🌍 **Multi-idioma**: Español e Inglés
+- 📱 **Cursos por WhatsApp**: Sin necesidad de apps adicionales
+- 🎣 **Simulaciones Gophish**: Phishing real para medir mejora
+- 📊 **Dashboard en tiempo real**: Métricas y seguimiento detallado
+
+---
+
+## 🚀 Instalación y Setup
+
+### 1. Instalar Dependencias
+
+```bash
+npm install
+```
+
+### 2. Configurar Variables de Entorno
+
+```bash
+cp .env.example .env
+```
+
+Editar `.env` con tus configuraciones.
+
+### 3. Iniciar Servidor de Desarrollo
+
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+---
+
+## 📚 Documentación
+
+- [Arquitectura Completa](../docs/ARQUITECTURA_COMPLETA.md)
+- [Sistema de Pagos](../docs/PAYMENT_SYSTEM.md)
+- [Modelos de Datos](../docs/DATABASE_ARCHITECTURE.md)
+
+---
+
+**Desarrollado con ❤️ por el equipo Niblion**
 
 ## React Compiler
 
