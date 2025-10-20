@@ -11,7 +11,7 @@ export const LanguageSelector = ({ className = '' }) => {
         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
           language === 'es'
             ? 'bg-primary-600 text-white'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-150'
         }`}
         aria-label="Cambiar a Español"
       >
@@ -22,7 +22,7 @@ export const LanguageSelector = ({ className = '' }) => {
         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
           language === 'en'
             ? 'bg-primary-600 text-white'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-150'
         }`}
         aria-label="Switch to English"
       >

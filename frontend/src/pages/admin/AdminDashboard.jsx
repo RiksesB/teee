@@ -13,9 +13,9 @@ export const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-75">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white shadow-sm border-b border-gray-150">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div>
@@ -36,7 +36,7 @@ export const AdminDashboard = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat) => (
-            <div key={stat.name} className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+            <div key={stat.name} className="bg-white rounded-xl shadow-sm p-6 border border-gray-150 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">{stat.name}</p>
@@ -55,8 +55,8 @@ export const AdminDashboard = () => {
         </div>
 
         {/* Tabs Navigation */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
-          <div className="border-b border-gray-200">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-150 mb-6">
+          <div className="border-b border-gray-150">
             <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
               {[
                 { id: 'overview', name: 'Resumen', icon: '📊' },

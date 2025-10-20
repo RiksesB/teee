@@ -173,7 +173,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           </div>
 
           {/* Total */}
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+          <div className="bg-gray-75 rounded-lg p-4 border border-gray-150">
             <div className="flex justify-between items-center">
               <span className="text-gray-700 font-medium">{t('payments.total')}:</span>
               <span className="text-3xl font-bold text-primary-600">
@@ -272,7 +272,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
 
       {/* Formularios específicos */}
       {paymentMethod === PAYMENT_METHODS.MOBILE_PAYMENT && (
-        <div className="space-y-4 bg-gray-50 p-6 rounded-lg mb-6">
+        <div className="space-y-4 bg-gray-75 p-6 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-900 mb-4">Datos del Pago Móvil</h3>
           <input
             type="tel"
@@ -310,7 +310,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
       )}
 
       {paymentMethod === PAYMENT_METHODS.BANK_TRANSFER && (
-        <div className="space-y-4 bg-gray-50 p-6 rounded-lg mb-6">
+        <div className="space-y-4 bg-gray-75 p-6 rounded-lg mb-6">
           <h3 className="font-semibold text-gray-900 mb-4">Datos de Transferencia</h3>
           
           {/* Info bancaria de Niblion */}

@@ -83,8 +83,8 @@ export function Analytics() {
       </div>
       
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-gray-150">
+          <thead className="bg-gray-75">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Módulo
@@ -106,9 +106,9 @@ export function Analytics() {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-150">
             {analytics.moduleStats.map((module, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+              <tr key={index} className="hover:bg-gray-75">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
                     Módulo {module.moduleId}
@@ -167,7 +167,7 @@ export function Analytics() {
       {analytics.progressTrends.length > 0 ? (
         <div className="space-y-4">
           {analytics.progressTrends.map((trend, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div key={index} className="flex items-center justify-between p-3 bg-gray-75 rounded-lg">
               <div>
                 <div className="text-sm font-medium text-gray-900">
                   {new Date(trend.date).toLocaleDateString()}

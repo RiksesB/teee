@@ -8,6 +8,22 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Paleta de grises suaves para fondos
+        gray: {
+          25: '#fcfcfd',
+          50: '#f9fafb',
+          75: '#f5f6f7',
+          100: '#f0f1f3',
+          150: '#e8eaed',
+          200: '#e1e4e8',
+          300: '#d1d5db',
+          400: '#9ca3af',
+          500: '#6b7280',
+          600: '#4b5563',
+          700: '#374151',
+          800: '#1f2937',
+          900: '#111827',
+        },
         // Niblion Brand Colors - Basado en el logo (azul ciberseguridad + verde éxito)
         primary: {
           50: '#e6f7ff',
