@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       // Mock users for testing - replace with real API call
-      const mockUsers = {
+      const defaultUsers = {
         'admin@niblion.com': {
           id: 1,
           email: 'admin@niblion.com',
@@ -51,10 +51,16 @@ export const AuthProvider = ({ children }) => {
         }
       };
 
+      // Obtener usuarios registrados del localStorage
+      const registeredUsers = JSON.parse(localStorage.getItem('niblion_registered_users') || '{}');
+      
+      // Combinar usuarios por defecto con usuarios registrados
+      const allUsers = { ...defaultUsers, ...registeredUsers };
+
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      const user = mockUsers[email];
+      const user = allUsers[email];
       
       if (!user || user.password !== password) {
         throw new Error('Credenciales inválidas');
@@ -81,6 +87,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (userData) => {
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Obtener usuarios registrados actuales
+      const registeredUsers = JSON.parse(localStorage.getItem('niblion_registered_users') || '{}');
+
+      // Verificar si el email ya existe
+      if (registeredUsers[userData.email]) {
+        throw new Error('Este correo electrónico ya está registrado');
+      }
+
+      // Crear nuevo usuario
+      const newUser = {
+        id: Date.now(),
+        email: userData.email,
+        name: userData.contactName || userData.companyName,
+        companyName: userData.companyName,
+        phone: userData.phone,
+        role: 'client', // Por defecto todos los registros son clientes
+        password: userData.password, // En producción, esto debe ser hasheado
+        employees: userData.employees,
+        createdAt: new Date().toISOString(),
+        status: 'active',
+      };
+
+      // Guardar en localStorage
+      registeredUsers[userData.email] = newUser;
+      localStorage.setItem('niblion_registered_users', JSON.stringify(registeredUsers));
+
+      return { success: true, message: 'Usuario registrado exitosamente' };
+    } catch (error) {
+      console.error('Register error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('niblion_user');
@@ -98,6 +142,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     login,
+    register,
     logout,
     hasRole,
     isAuthenticated,

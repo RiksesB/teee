@@ -165,13 +165,18 @@ export const Login = () => {
 
         {/* Demo Credentials */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h4 className="text-sm font-medium text-blue-900 mb-2">Usuarios de Prueba:</h4>
-          <div className="text-xs text-blue-700 space-y-1">
+          <h4 className="text-sm font-medium text-blue-900 mb-2">💡 Usuarios de Prueba:</h4>
+          <div className="text-xs text-blue-700 space-y-1.5">
             <div>
               <strong>Admin:</strong> admin@niblion.com / admin123
             </div>
             <div>
               <strong>Cliente:</strong> client@techcorp.com / client123
+            </div>
+            <div className="pt-2 mt-2 border-t border-blue-200">
+              <span className="text-blue-600">
+                ✨ ¿Nuevo? <Link to="/register" className="font-semibold underline">Regístrate aquí</Link> - Los datos se guardan localmente
+              </span>
             </div>
           </div>
         </div>

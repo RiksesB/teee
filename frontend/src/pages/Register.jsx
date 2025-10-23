@@ -24,6 +24,8 @@ export const Register = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  const { register } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -49,31 +51,19 @@ export const Register = () => {
     }
 
     try {
-      // Simular API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Usar la función register del AuthContext
+      const result = await register(formData);
 
-      // Guardar temporalmente en localStorage
-      const pendingRegistrations = JSON.parse(localStorage.getItem('niblion_pending_registrations') || '[]');
-      
-      const newRegistration = {
-        id: Date.now(),
-        ...formData,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        // No guardar contraseñas en texto plano en producción
-        password: undefined,
-        confirmPassword: undefined
-      };
-
-      pendingRegistrations.push(newRegistration);
-      localStorage.setItem('niblion_pending_registrations', JSON.stringify(pendingRegistrations));
-
-      setSuccess(true);
-      
-      // Redirigir después de 3 segundos
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
+      if (result.success) {
+        setSuccess(true);
+        
+        // Redirigir después de 3 segundos
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+      } else {
+        setError(result.error || 'Error al procesar el registro');
+      }
 
     } catch (error) {
       setError('Error al procesar el registro. Intenta nuevamente.');
@@ -98,14 +88,14 @@ export const Register = () => {
             <div className="text-6xl mb-4">✅</div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">¡Registro Exitoso!</h2>
             <p className="text-gray-600 mb-6">
-              Tu solicitud ha sido enviada correctamente. Recibirás una confirmación por email una vez que sea aprobada por nuestro equipo.
+              Tu cuenta ha sido creada correctamente. Ya puedes iniciar sesión y comenzar a usar Niblion.
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
               <p className="text-sm text-blue-700">
                 <strong>Próximos pasos:</strong><br/>
-                1. Revisaremos tu solicitud (24-48 horas)<br/>
-                2. Te enviaremos credenciales de acceso<br/>
-                3. Podrás comenzar a capacitar a tu equipo
+                1. Inicia sesión con tus credenciales<br/>
+                2. Configura tu primera campaña<br/>
+                3. Comienza a capacitar a tu equipo
               </p>
             </div>
             <p className="text-sm text-gray-500">
