@@ -8,6 +8,7 @@ import './LandingPage.css';
 export const LandingPage = () => {
   const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [isCardFlipped, setIsCardFlipped] = React.useState(false);
 
   return (
     <div className="bg-white">
@@ -65,42 +66,45 @@ export const LandingPage = () => {
 
           {/* Mobile menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 mobile-menu">
-              <div className="flex flex-col space-y-3">
+            <div className="md:hidden absolute top-full left-0 right-0 bg-blue-600 shadow-xl border-t border-blue-500 z-50">
+              <div className="flex flex-col py-4">
                 <a
                   href="#features"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 hover:text-primary-600 transition-colors px-4 py-2"
+                  className="text-white hover:bg-blue-700 transition-colors px-6 py-3 font-medium"
                 >
                   {t('landing.nav.features')}
                 </a>
                 <a
                   href="#pricing"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 hover:text-primary-600 transition-colors px-4 py-2"
+                  className="text-white hover:bg-blue-700 transition-colors px-6 py-3 font-medium"
                 >
                   {t('landing.nav.pricing')}
                 </a>
                 <a
                   href="#how-it-works"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 hover:text-primary-600 transition-colors px-4 py-2"
+                  className="text-white hover:bg-blue-700 transition-colors px-6 py-3 font-medium"
                 >
                   {t('landing.nav.howItWorks')}
                 </a>
                 <a
                   href="#contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 hover:text-primary-600 transition-colors px-4 py-2"
+                  className="text-white hover:bg-blue-700 transition-colors px-6 py-3 font-medium"
                 >
                   {t('landing.nav.contact')}
                 </a>
-                <Link
-                  to="/login"
-                  className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors font-medium text-center mx-4"
-                >
-                  {t('landing.login')}
-                </Link>
+                <div className="px-6 py-3">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block bg-white text-blue-600 px-4 py-3 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-center shadow-md"
+                  >
+                    {t('landing.login')}
+                  </Link>
+                </div>
               </div>
             </div>
           )}
@@ -158,26 +162,26 @@ export const LandingPage = () => {
                       <span className="text-2xl">📱</span>
                     </div>
                     <div className="flex-1">
-                      <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
-                      <div className="h-2 bg-gray-100 rounded w-1/2"></div>
+                      <div className="text-sm font-semibold text-gray-900 mb-1">Capacitación en WhatsApp</div>
+                      <div className="text-xs text-gray-600">Accede a cursos directamente desde tu chat favorito, sin apps adicionales</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center">
-                      <span className="text-2xl">✅</span>
+                      <span className="text-2xl">⚡</span>
                     </div>
                     <div className="flex-1">
-                      <div className="h-3 bg-gray-200 rounded w-2/3 mb-2"></div>
-                      <div className="h-2 bg-gray-100 rounded w-5/6"></div>
+                      <div className="text-sm font-semibold text-gray-900 mb-1">Mayor Eficiencia</div>
+                      <div className="text-xs text-gray-600">Reduce el tiempo de capacitación en un 60% con simulaciones interactivas</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-2xl">🎯</span>
+                      <span className="text-2xl">🤖</span>
                     </div>
                     <div className="flex-1">
-                      <div className="h-3 bg-gray-200 rounded w-4/5 mb-2"></div>
-                      <div className="h-2 bg-gray-100 rounded w-2/3"></div>
+                      <div className="text-sm font-semibold text-gray-900 mb-1">Asistente IA 24/7</div>
+                      <div className="text-xs text-gray-600">Chatbot inteligente que responde dudas y guía el aprendizaje</div>
                     </div>
                   </div>
                 </div>
@@ -362,76 +366,158 @@ export const LandingPage = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 border-2 border-primary-200 shadow-xl">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t('landing.pricing.perPerson')}
-                </h3>
-                <div className="flex items-center justify-center gap-8">
-                  <div>
-                    <div className="text-5xl font-bold text-primary-600">$5.99</div>
-                    <div className="text-gray-600">USD</div>
+            {/* Flip Card Container */}
+            <div className="w-full h-[500px] sm:h-[480px] md:h-[520px] lg:h-[550px] relative">
+              <div 
+                className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
+                  isCardFlipped ? 'rotate-y-180' : ''
+                }`}
+                onClick={() => setIsCardFlipped(!isCardFlipped)}
+              >
+                
+                {/* Frente de la tarjeta */}
+                <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50 rounded-2xl border-2 border-blue-200 shadow-xl overflow-hidden">
+                  <div className="h-full flex flex-col justify-between p-4 sm:p-6 lg:p-8">
+                    {/* Header con indicador */}
+                    <div className="flex justify-between items-start">
+                      <div></div>
+                      <div className="animate-bounce">
+                        <div className="bg-blue-500 text-white rounded-full p-2 shadow-lg">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Contenido principal */}
+                    <div className="flex-1 flex flex-col justify-center min-h-0">
+                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-6 text-center">
+                        {t('landing.pricing.perPerson')}
+                      </h3>
+                      
+                      <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8 mb-3 sm:mb-4 lg:mb-6">
+                        <div className="text-center">
+                          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600">$5.99</div>
+                          <div className="text-gray-600 font-medium text-sm sm:text-base">USD</div>
+                        </div>
+                        <div className="text-2xl sm:text-3xl text-gray-400 font-light">o</div>
+                        <div className="text-center">
+                          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600">Bs. 220</div>
+                          <div className="text-gray-600 font-medium text-sm sm:text-base">VES</div>
+                        </div>
+                      </div>
+                      
+                      <p className="text-gray-600 text-center mb-4 sm:mb-6 lg:mb-8 text-sm sm:text-base px-2 sm:px-4">
+                        {t('landing.pricing.perPersonText')}
+                      </p>
+
+                      {/* Incluye */}
+                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 sm:p-4 lg:p-6 mx-auto w-full max-w-sm lg:max-w-md">
+                        <h4 className="font-bold text-gray-900 mb-2 sm:mb-3 lg:mb-4 flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg">
+                          <span className="text-xl sm:text-2xl">✅</span>
+                          {t('landing.pricing.includes')}
+                        </h4>
+                        <ul className="space-y-1.5 sm:space-y-2 lg:space-y-3">
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
+                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">{t('landing.pricing.item1')}</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
+                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">{t('landing.pricing.item2')}</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
+                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">{t('landing.pricing.item3')}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Footer con indicativo */}
+                    <div className="flex justify-center mt-2 sm:mt-3 lg:mt-4">
+                      <p className="text-blue-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
+                        <span>👆</span>
+                        Haz clic para ver métodos de pago
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-3xl text-gray-400">o</div>
-                  <div>
-                    <div className="text-5xl font-bold text-primary-600">Bs. 220</div>
-                    <div className="text-gray-600">VES</div>
+                </div>
+
+                {/* Reverso de la tarjeta */}
+                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-green-50 via-white to-blue-50 rounded-2xl border-2 border-green-200 shadow-xl overflow-hidden">
+                  <div className="h-full flex flex-col justify-between p-6 sm:p-8">
+                    {/* Header con indicador */}
+                    <div className="flex justify-between items-start">
+                      <div className="animate-bounce">
+                        <div className="bg-green-500 text-white rounded-full p-2 shadow-lg">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                          </svg>
+                        </div>
+                      </div>
+                      <div></div>
+                    </div>
+
+                    {/* Contenido principal */}
+                    <div className="flex-1 flex flex-col justify-center">
+                      <h3 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 flex items-center justify-center gap-3">
+                        <span className="text-2xl sm:text-3xl">💳</span>
+                        <span className="text-center">{t('landing.pricing.paymentMethods')}</span>
+                      </h3>
+
+                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 sm:p-6 mx-auto w-full max-w-sm">
+                        <ul className="space-y-3 sm:space-y-4">
+                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-lg sm:text-xl">💳</span>
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-gray-900 font-semibold text-sm sm:text-base">PayPal</span>
+                              <p className="text-gray-600 text-xs">Procesamiento automático</p>
+                            </div>
+                          </li>
+                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-lg sm:text-xl">📱</span>
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-gray-900 font-semibold text-sm sm:text-base">{t('landing.pricing.mobilePayment')}</span>
+                              <p className="text-gray-600 text-xs">Verificación manual</p>
+                            </div>
+                          </li>
+                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-lg sm:text-xl">🏦</span>
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <span className="text-gray-900 font-semibold text-sm sm:text-base">{t('landing.pricing.bankTransfer')}</span>
+                              <p className="text-gray-600 text-xs">Todas las entidades</p>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="mt-4 sm:mt-6 flex justify-center">
+                        <a
+                          href="#contact"
+                          className="inline-block bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-green-700 transition-all font-medium text-sm sm:text-lg shadow-lg hover:shadow-xl"
+                        >
+                          {t('landing.pricing.cta')}
+                        </a>
+                      </div>
+                    </div>
+
+                    {/* Footer con indicativo */}
+                    <div className="flex justify-center">
+                      <p className="text-green-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
+                        <span>👆</span>
+                        Haz clic para volver
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <p className="text-gray-600 mt-4">{t('landing.pricing.perPersonText')}</p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white rounded-xl p-6">
-                  <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">✅</span>
-                    {t('landing.pricing.includes')}
-                  </h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <span className="text-secondary-600 mt-1">✓</span>
-                      <span className="text-gray-700">{t('landing.pricing.item1')}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-secondary-600 mt-1">✓</span>
-                      <span className="text-gray-700">{t('landing.pricing.item2')}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-secondary-600 mt-1">✓</span>
-                      <span className="text-gray-700">{t('landing.pricing.item3')}</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="bg-white rounded-xl p-6">
-                  <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <span className="text-2xl">💳</span>
-                    {t('landing.pricing.paymentMethods')}
-                  </h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary-600 mt-1">💳</span>
-                      <span className="text-gray-700">PayPal</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary-600 mt-1">📱</span>
-                      <span className="text-gray-700">{t('landing.pricing.mobilePayment')}</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary-600 mt-1">🏦</span>
-                      <span className="text-gray-700">{t('landing.pricing.bankTransfer')}</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <a
-                  href="#contact"
-                  className="inline-block bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-all font-medium text-lg shadow-lg"
-                >
-                  {t('landing.pricing.cta')}
-                </a>
               </div>
             </div>
           </div>

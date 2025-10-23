@@ -26,25 +26,49 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // TODO: Integrar con API real
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      // Mock users for testing - replace with real API call
+      const mockUsers = {
+        'admin@niblion.com': {
+          id: 1,
+          email: 'admin@niblion.com',
+          name: 'Administrador Niblion',
+          role: 'admin',
+          password: 'admin123'
+        },
+        'client@techcorp.com': {
+          id: 2,
+          email: 'client@techcorp.com',
+          name: 'María González - TechCorp',
+          role: 'client',
+          password: 'client123'
+        },
+        'client2@startup.com': {
+          id: 3,
+          email: 'client2@startup.com',
+          name: 'Carlos Rodríguez - StartupXYZ',
+          role: 'client',
+          password: 'client123'
+        }
+      };
 
-      if (!response.ok) {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const user = mockUsers[email];
+      
+      if (!user || user.password !== password) {
         throw new Error('Credenciales inválidas');
       }
 
-      const data = await response.json();
+      // Generate mock JWT token
+      const mockToken = `mock_jwt_token_${user.id}_${Date.now()}`;
       
       const userData = {
-        id: data.user.id,
-        email: data.user.email,
-        name: data.user.name,
-        role: data.user.role, // 'admin' o 'client'
-        token: data.token,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        token: mockToken,
       };
 
       setUser(userData);

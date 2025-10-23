@@ -36,15 +36,15 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <div className="max-w-md w-full space-y-6 sm:space-y-8">
         {/* Botón volver y selector de idioma */}
         <div className="flex justify-between items-center">
           <Link 
             to="/" 
-            className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors"
+            className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors text-sm sm:text-base"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             {t('common.back') || 'Volver'}
@@ -57,21 +57,21 @@ export const Login = () => {
           <div className="flex justify-center mb-4">
             <NiblionLogo size="xxl" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2 niblion-brand">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 niblion-brand">
             Niblion
           </h2>
-          <p className="text-sm text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600">
             {t('auth.loginSubtitle')}
           </p>
         </div>
 
         {/* Formulario */}
-        <div className="mt-8 bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="mt-6 sm:mt-8 bg-white py-6 sm:py-8 px-4 sm:px-6 shadow-xl rounded-2xl border border-gray-100">
+          <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-danger-50 border border-danger-200 text-danger-800 rounded-lg p-4 text-sm">
+              <div className="bg-danger-50 border border-danger-200 text-danger-800 rounded-lg p-3 sm:p-4 text-sm">
                 <div className="flex">
-                  <svg className="h-5 w-5 text-danger-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5 text-danger-400 mr-2 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   {error}
@@ -91,7 +91,7 @@ export const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                className="appearance-none relative block w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
                 placeholder={t('auth.emailPlaceholder')}
               />
             </div>
@@ -108,12 +108,12 @@ export const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                className="appearance-none relative block w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
                 placeholder={t('auth.passwordPlaceholder')}
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -136,7 +136,7 @@ export const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center">
@@ -150,7 +150,30 @@ export const Login = () => {
                 t('auth.loginButton')
               )}
             </button>
+
+            {/* Register link */}
+            <div className="text-center pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                ¿No tienes una cuenta?{' '}
+                <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
+                  Regístrate aquí
+                </Link>
+              </p>
+            </div>
           </form>
+        </div>
+
+        {/* Demo Credentials */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 className="text-sm font-medium text-blue-900 mb-2">Usuarios de Prueba:</h4>
+          <div className="text-xs text-blue-700 space-y-1">
+            <div>
+              <strong>Admin:</strong> admin@niblion.com / admin123
+            </div>
+            <div>
+              <strong>Cliente:</strong> client@techcorp.com / client123
+            </div>
+          </div>
         </div>
 
         {/* Footer */}

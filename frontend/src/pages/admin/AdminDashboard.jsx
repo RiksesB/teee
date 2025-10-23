@@ -13,84 +13,79 @@ export const AdminDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-75">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-150">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Panel de Administración</h1>
-              <p className="mt-1 text-sm text-gray-500">Bienvenido, {user?.name}</p>
-            </div>
-            <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Nuevo Cliente
-            </button>
-          </div>
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Panel de Administración</h1>
+          <p className="text-sm text-gray-500 mt-1">Bienvenido, {user?.name}</p>
         </div>
-      </header>
+        <button className="bg-primary-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+          <span className="hidden sm:inline">Nuevo Cliente</span>
+          <span className="sm:hidden">Nuevo</span>
+        </button>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat) => (
-            <div key={stat.name} className="bg-white rounded-xl shadow-sm p-6 border border-gray-150 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.name}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">{stat.value}</p>
-                </div>
-                <div className="text-4xl">{stat.icon}</div>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+        {stats.map((stat) => (
+          <div key={stat.name} className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-150 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.name}</p>
+                <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stat.value}</p>
               </div>
-              <div className="mt-4 flex items-center">
-                <span className={`text-sm font-medium ${stat.trend === 'up' ? 'text-secondary-600' : 'text-danger-600'}`}>
-                  {stat.change}
-                </span>
-                <span className="text-sm text-gray-500 ml-2">vs mes anterior</span>
-              </div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl">{stat.icon}</div>
             </div>
-          ))}
+            <div className="mt-2 sm:mt-4 flex items-center">
+              <span className={`text-xs sm:text-sm font-medium ${stat.trend === 'up' ? 'text-secondary-600' : 'text-danger-600'}`}>
+                {stat.change}
+              </span>
+              <span className="text-xs sm:text-sm text-gray-500 ml-2">vs mes anterior</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tabs Navigation */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-150">
+        <div className="border-b border-gray-150 px-2 sm:px-6">
+          <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto" aria-label="Tabs">
+            {[
+              { id: 'overview', name: 'Resumen', icon: '📊' },
+              { id: 'clients', name: 'Clientes', icon: '👥' },
+              { id: 'courses', name: 'Cursos', icon: '📚' },
+              { id: 'licenses', name: 'Licencias', icon: '🎫' },
+              { id: 'campaigns', name: 'Campañas', icon: '📢' },
+              { id: 'reports', name: 'Reportes', icon: '📈' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`${
+                  activeTab === tab.id
+                    ? 'border-primary-500 text-primary-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } whitespace-nowrap py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors`}
+              >
+                <span className="text-sm sm:text-base">{tab.icon}</span>
+                <span className="hidden sm:inline">{tab.name}</span>
+              </button>
+            ))}
+          </nav>
         </div>
 
-        {/* Tabs Navigation */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-150 mb-6">
-          <div className="border-b border-gray-150">
-            <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
-              {[
-                { id: 'overview', name: 'Resumen', icon: '📊' },
-                { id: 'clients', name: 'Clientes', icon: '👥' },
-                { id: 'courses', name: 'Cursos', icon: '📚' },
-                { id: 'licenses', name: 'Licencias', icon: '🎫' },
-                { id: 'campaigns', name: 'Campañas', icon: '📢' },
-                { id: 'reports', name: 'Reportes', icon: '📈' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`${
-                    activeTab === tab.id
-                      ? 'border-primary-500 text-primary-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors`}
-                >
-                  <span>{tab.icon}</span>
-                  {tab.name}
-                </button>
-              ))}
-            </nav>
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-6">
-            {activeTab === 'overview' && <OverviewTab />}
-            {activeTab === 'clients' && <ClientsTab />}
-            {activeTab === 'courses' && <CoursesTab />}
-            {activeTab === 'licenses' && <LicensesTab />}
-            {activeTab === 'campaigns' && <CampaignsTab />}
-            {activeTab === 'reports' && <ReportsTab />}
-          </div>
+        {/* Tab Content */}
+        <div className="p-4 sm:p-6">
+          {activeTab === 'overview' && <OverviewTab />}
+          {activeTab === 'clients' && <ClientsTab />}
+          {activeTab === 'courses' && <CoursesTab />}
+          {activeTab === 'licenses' && <LicensesTab />}
+          {activeTab === 'campaigns' && <CampaignsTab />}
+          {activeTab === 'reports' && <ReportsTab />}
         </div>
       </div>
     </div>

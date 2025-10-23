@@ -7,8 +7,22 @@ import { DashboardLayout } from './components/layout/DashboardLayout';
 // Pages
 import { LandingPage } from './pages/LandingPage';
 import { Login } from './pages/Login';
+import { Register } from './pages/Register';
+
+// Admin Pages
 import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { ClientsPage } from './pages/admin/ClientsPage';
+import { CoursesPage } from './pages/admin/CoursesPage';
+import { LicensesPage } from './pages/admin/LicensesPage';
+import { CampaignsPage } from './pages/admin/CampaignsPage';
+import { ReportsPage } from './pages/admin/ReportsPage';
+
+// Client Pages
 import { ClientDashboard } from './pages/client/ClientDashboard';
+import { CatalogPage } from './pages/client/CatalogPage';
+import { ClientLicensesPage } from './pages/client/ClientLicensesPage';
+import { ClientCampaignsPage } from './pages/client/ClientCampaignsPage';
+import { TrackingPage } from './pages/client/TrackingPage';
 
 function App() {
   return (
@@ -27,6 +41,15 @@ function App() {
             }
           />
 
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
+
           {/* Admin Routes */}
           <Route
             path="/admin/*"
@@ -35,11 +58,11 @@ function App() {
                 <DashboardLayout>
                   <Routes>
                     <Route path="/" element={<AdminDashboard />} />
-                    <Route path="/clients" element={<div>Clientes Page</div>} />
-                    <Route path="/courses" element={<div>Cursos Page</div>} />
-                    <Route path="/licenses" element={<div>Licencias Page</div>} />
-                    <Route path="/campaigns" element={<div>Campañas Page</div>} />
-                    <Route path="/reports" element={<div>Reportes Page</div>} />
+                    <Route path="/clients" element={<ClientsPage />} />
+                    <Route path="/courses" element={<CoursesPage />} />
+                    <Route path="/licenses" element={<LicensesPage />} />
+                    <Route path="/campaigns" element={<CampaignsPage />} />
+                    <Route path="/reports" element={<ReportsPage />} />
                   </Routes>
                 </DashboardLayout>
               </ProtectedRoute>
@@ -54,10 +77,10 @@ function App() {
                 <DashboardLayout>
                   <Routes>
                     <Route path="/" element={<ClientDashboard />} />
-                    <Route path="/catalog" element={<div>Catálogo Page</div>} />
-                    <Route path="/licenses" element={<div>Mis Licencias Page</div>} />
-                    <Route path="/campaigns" element={<div>Mis Campañas Page</div>} />
-                    <Route path="/tracking" element={<div>Seguimiento Page</div>} />
+                    <Route path="/catalog" element={<CatalogPage />} />
+                    <Route path="/licenses" element={<ClientLicensesPage />} />
+                    <Route path="/campaigns" element={<ClientCampaignsPage />} />
+                    <Route path="/tracking" element={<TrackingPage />} />
                   </Routes>
                 </DashboardLayout>
               </ProtectedRoute>

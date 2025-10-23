@@ -1,0 +1,346 @@
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useTranslation } from '../utils/i18n.jsx';
+import { LanguageSelector } from '../components/ui/LanguageSelector';
+import { NiblionLogo } from '../components/ui/Logo';
+
+export const Register = () => {
+  const [formData, setFormData] = useState({
+    companyName: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: '',
+    employees: '',
+    industry: '',
+    acceptTerms: false
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    // Validaciones
+    if (formData.password !== formData.confirmPassword) {
+      setError('Las contraseñas no coinciden');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres');
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      setError('Debes aceptar los términos y condiciones');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Simular API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Guardar temporalmente en localStorage
+      const pendingRegistrations = JSON.parse(localStorage.getItem('niblion_pending_registrations') || '[]');
+      
+      const newRegistration = {
+        id: Date.now(),
+        ...formData,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+        // No guardar contraseñas en texto plano en producción
+        password: undefined,
+        confirmPassword: undefined
+      };
+
+      pendingRegistrations.push(newRegistration);
+      localStorage.setItem('niblion_pending_registrations', JSON.stringify(pendingRegistrations));
+
+      setSuccess(true);
+      
+      // Redirigir después de 3 segundos
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+
+    } catch (error) {
+      setError('Error al procesar el registro. Intenta nuevamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full text-center">
+          <div className="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100">
+            <div className="text-6xl mb-4">✅</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">¡Registro Exitoso!</h2>
+            <p className="text-gray-600 mb-6">
+              Tu solicitud ha sido enviada correctamente. Recibirás una confirmación por email una vez que sea aprobada por nuestro equipo.
+            </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <p className="text-sm text-blue-700">
+                <strong>Próximos pasos:</strong><br/>
+                1. Revisaremos tu solicitud (24-48 horas)<br/>
+                2. Te enviaremos credenciales de acceso<br/>
+                3. Podrás comenzar a capacitar a tu equipo
+              </p>
+            </div>
+            <p className="text-sm text-gray-500">
+              Redirigiendo al login en unos segundos...
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6 sm:mb-8">
+          <Link 
+            to="/" 
+            className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver al inicio
+          </Link>
+          <LanguageSelector />
+        </div>
+
+        {/* Logo y Header */}
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex justify-center mb-4">
+            <NiblionLogo size="xxl" />
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 niblion-brand">
+            Únete a Niblion
+          </h2>
+          <p className="text-sm sm:text-base text-gray-600">
+            Protege a tu organización contra ataques de phishing
+          </p>
+        </div>
+
+        {/* Formulario */}
+        <div className="bg-white py-6 sm:py-8 px-4 sm:px-8 shadow-xl rounded-2xl border border-gray-100">
+          <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-danger-50 border border-danger-200 text-danger-800 rounded-lg p-4 text-sm">
+                <div className="flex">
+                  <svg className="h-5 w-5 text-danger-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  {error}
+                </div>
+              </div>
+            )}
+
+            {/* Información de la Empresa */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="sm:col-span-2">
+                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre de la Empresa *
+                </label>
+                <input
+                  id="companyName"
+                  name="companyName"
+                  type="text"
+                  required
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="Ej: TechCorp S.A."
+                />
+              </div>
+
+              <div>
+                <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Persona de Contacto *
+                </label>
+                <input
+                  id="contactName"
+                  name="contactName"
+                  type="text"
+                  required
+                  value={formData.contactName}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="Tu nombre completo"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Corporativo *
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="admin@tuempresa.com"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Teléfono *
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="+584121234567"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="employees" className="block text-sm font-medium text-gray-700 mb-2">
+                  Número de Empleados *
+                </label>
+                <select
+                  id="employees"
+                  name="employees"
+                  required
+                  value={formData.employees}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                >
+                  <option value="">Selecciona...</option>
+                  <option value="1-10">1-10 empleados</option>
+                  <option value="11-50">11-50 empleados</option>
+                  <option value="51-100">51-100 empleados</option>
+                  <option value="101-500">101-500 empleados</option>
+                  <option value="500+">Más de 500 empleados</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Contraseñas */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  Contraseña *
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                  Confirmar Contraseña *
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                  placeholder="Repite la contraseña"
+                />
+              </div>
+            </div>
+
+            {/* Términos y condiciones */}
+            <div className="flex items-start">
+              <input
+                id="acceptTerms"
+                name="acceptTerms"
+                type="checkbox"
+                checked={formData.acceptTerms}
+                onChange={handleChange}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
+              />
+              <label htmlFor="acceptTerms" className="ml-3 block text-sm text-gray-700">
+                Acepto los{' '}
+                <a href="#" className="text-primary-600 hover:text-primary-500 font-medium">
+                  términos y condiciones
+                </a>{' '}
+                y la{' '}
+                <a href="#" className="text-primary-600 hover:text-primary-500 font-medium">
+                  política de privacidad
+                </a>
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center py-2 sm:py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? (
+                <span className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Enviando solicitud...
+                </span>
+              ) : (
+                'Enviar Solicitud de Registro'
+              )}
+            </button>
+
+            {/* Login link */}
+            <div className="text-center pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                ¿Ya tienes una cuenta?{' '}
+                <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
+                  Inicia sesión aquí
+                </Link>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        {/* Footer */}
+        <p className="text-center text-xs text-gray-500 mt-6 sm:mt-8">
+          © 2025 Niblion. Plataforma de concienciación en ciberseguridad.
+        </p>
+      </div>
+    </div>
+  );
+};
