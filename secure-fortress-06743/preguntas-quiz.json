@@ -1,0 +1,303 @@
+{
+  "version": "1.0.0",
+  "fecha_creacion": "2025-01-15",
+  "descripcion": "Preguntas del curso de seguridad digital y protección contra phishing",
+  "modulos": {
+    "1": {
+      "titulo": "✅ Módulo 1 – Contraseñas Seguras: Tu Primera Línea de Defensa",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Cuál de estas contraseñas es la más segura?",
+          "opciones": ["a) 123456", "b) MiNombre2024", "c) Tr3nSegura!2025"],
+          "respuesta_correcta": "C",
+          "retroalimentacion": {
+            "A": "❌ Muy fácil de adivinar. Es como dejar la puerta abierta.",
+            "B": "❌ Aunque tiene letras y números, es predecible si alguien conoce tu nombre.",
+            "C": "✅ ¡Muy bien! Una buena contraseña mezcla mayúsculas, minúsculas, números y símbolos."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "Tu hermana te pide tu contraseña para ayudarte a revisar tu correo. ¿Qué deberías hacer?",
+          "opciones": [
+            "a) Se la doy, solo por esta vez",
+            "b) Le digo que no la puedo compartir",
+            "c) La cambio después de que ella la use"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ No importa quién lo pida: las contraseñas son personales.",
+            "B": "✅ Correcto. Ni familiares ni amigos deben conocer tu contraseña.",
+            "C": "❌ Cambiarla después no evita que otro la use mal mientras la tiene."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "¿Para qué sirve activar la verificación en dos pasos?",
+          "opciones": [
+            "a) Para que me envíen publicidad",
+            "b) Para tener un segundo nivel de seguridad",
+            "c) Para cambiar mi contraseña más rápido"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ No tiene nada que ver con publicidad.",
+            "B": "✅ ¡Muy bien! La verificación en dos pasos funciona así:\n• Además de poner tu contraseña, también recibes un código único en tu teléfono.\n• Solo tú puedes verlo.\n• Aunque alguien adivine tu contraseña, no podrá entrar sin ese segundo paso.",
+            "C": "❌ No es para cambiar contraseñas, sino para proteger tu cuenta."
+          }
+        }
+      ]
+    },
+    "2": {
+      "titulo": "✅ Módulo 2 – ¿Este Correo es Real o es una Estafa?",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Qué detalle te puede ayudar a descubrir que un correo/link es falso?",
+          "opciones": [
+            "a) Tiene errores de ortografía y frases mal escritas",
+            "b) Usa un logotipo bonito y colores oficiales",
+            "c) Empieza con un saludo amigable"
+          ],
+          "respuesta_correcta": "A",
+          "retroalimentacion": {
+            "A": "✅ ¡Correcto! Los errores de redacción son una señal clara de que puede ser una estafa.",
+            "B": "❌ Los estafadores copian logos y colores para parecer reales.",
+            "C": "❌ Un saludo amistoso no garantiza que sea seguro."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "¿Qué deberías hacer si recibes un correo que te pide datos personales, como tu contraseña o número de cédula?",
+          "opciones": [
+            "a) Responder rápido, por si es urgente",
+            "b) Ignorarlo completamente",
+            "c) No responder y avisar a tecnología o seguridad"
+          ],
+          "respuesta_correcta": "C",
+          "retroalimentacion": {
+            "A": "❌ Nunca compartas datos personales por correo.",
+            "B": "❌ Ignorarlo no es suficiente: es importante reportarlo.",
+            "C": "✅ ¡Muy bien! Así ayudas a prevenir que otros caigan."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "Recibes un correo que dice: \"Aquí está la información que pediste\", pero tú no pediste nada. ¿Qué deberías hacer?",
+          "opciones": [
+            "a) Lo abro igual, por curiosidad",
+            "b) Lo reviso con calma y, si no lo esperaba, no lo abro ni respondo",
+            "c) Se lo reenvío a alguien para que me diga si es seguro"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ La curiosidad puede jugarte en contra. Si no lo esperabas, es mejor no abrirlo.",
+            "B": "✅ ¡Muy bien! Si no pediste nada, mejor no interactuar. Así te proteges.",
+            "C": "❌ Reenviar un correo sospechoso puede poner en riesgo a otras personas."
+          }
+        }
+      ]
+    },
+    "3": {
+      "titulo": "✅ Módulo 3 – ¿Qué es un Deepfake y Cómo Protegerte?",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Qué es un deepfake?",
+          "opciones": [
+            "a) Un video o audio manipulado para parecer real, pero que es falso",
+            "b) Un video que solo se puede ver con gafas 3D",
+            "c) Un tipo de programa para editar fotos"
+          ],
+          "respuesta_correcta": "A",
+          "retroalimentacion": {
+            "A": "✅ ¡Exacto! Los deepfakes usan tecnología para crear videos o audios falsos que parecen reales.",
+            "B": "❌ No tiene que ver con gafas 3D, es más sobre manipulación digital.",
+            "C": "❌ Aunque se puede editar fotos, los deepfakes afectan video y audio, no solo imágenes."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "¿Cómo se crean los deepfakes?",
+          "opciones": [
+            "a) Solo con videos grabados, sin usar ninguna tecnología",
+            "b) Usando inteligencia artificial para imitar la voz y los gestos de una persona",
+            "c) Usando cámaras especiales que graban desde ángulos extraños"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ No solo se graban videos. Los deepfakes usan IA para crear contenido falso.",
+            "B": "✅ ¡Correcto! Se utiliza inteligencia artificial para imitar voces, gestos, y comportamientos de una persona.",
+            "C": "❌ Las cámaras especiales no son necesarias para crear deepfakes, lo que se usa es la IA."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "Si recibes una llamada de tu jefe pidiéndote algo urgente, ¿qué deberías hacer?",
+          "opciones": [
+            "a) Actuar rápidamente, ya que la llamada parece real",
+            "b) Ignorar la llamada, no importa si parece importante",
+            "c) Verificar la solicitud de la llamada usando otro medio, como un correo o mensaje directo"
+          ],
+          "respuesta_correcta": "C",
+          "retroalimentacion": {
+            "A": "❌ No actúes rápidamente si no estás seguro, los deepfakes pueden engañarte.",
+            "B": "❌ Ignorar la llamada puede no ser la mejor opción si es realmente urgente. Mejor verifica.",
+            "C": "✅ ¡Bien hecho! Siempre verifica las solicitudes, especialmente si no esperabas esa llamada."
+          }
+        }
+      ]
+    },
+    "4": {
+      "titulo": "✅ Módulo 4 – Tu Teléfono También Necesita Protección",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Cuál es la forma más segura de bloquear tu teléfono?",
+          "opciones": [
+            "a) Usar solo una contraseña simple",
+            "b) Usar huella digital o Face ID",
+            "c) No bloquearlo, ya que es innecesario"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Las contraseñas simples pueden ser fáciles de adivinar.",
+            "B": "✅ ¡Correcto! La huella digital y Face ID son más seguros y rápidos que una contraseña.",
+            "C": "❌ No bloquear tu teléfono pone en riesgo toda tu información."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "¿Por qué es importante mantener tu teléfono actualizado?",
+          "opciones": [
+            "a) Para que se vean bien las aplicaciones",
+            "b) Porque las actualizaciones corrigen errores que los atacantes pueden usar para acceder a tu teléfono",
+            "c) Para tener más espacio en la memoria"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Las actualizaciones no solo son para mejorar la apariencia, también protegen la seguridad.",
+            "B": "✅ ¡Exacto! Las actualizaciones cierran las vulnerabilidades que los atacantes podrían aprovechar.",
+            "C": "❌ El espacio en la memoria no es la razón principal de las actualizaciones."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "¿Qué debes hacer antes de conectarte a una red Wi-Fi pública?",
+          "opciones": [
+            "a) Conectarte sin problemas, ya que es seguro",
+            "b) Usar una VPN para proteger tu conexión",
+            "c) No conectarte nunca, ya que es innecesario"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Las redes públicas pueden ser peligrosas y no siempre son seguras.",
+            "B": "✅ ¡Muy bien! Usar una VPN es la forma más segura de conectarse a redes públicas.",
+            "C": "❌ No conectarte puede limitar tus opciones, pero siempre usa una VPN para mayor seguridad."
+          }
+        }
+      ]
+    },
+    "5": {
+      "titulo": "✅ Módulo 5 – ¿Es Este Enlace o Archivo Seguro? Cómo Verificarlo con VirusTotal",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Qué debes hacer si tienes dudas sobre un enlace antes de hacer clic?",
+          "opciones": [
+            "a) Hacer clic de todos modos, porque parece seguro",
+            "b) Revisar el enlace en VirusTotal para verificar si es seguro",
+            "c) Ignorar el enlace y seguir navegando sin hacer nada"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ No hagas clic sin estar seguro, ya que podrías poner en riesgo tu información.",
+            "B": "✅ ¡Exacto! Usar VirusTotal es la mejor forma de verificar un enlace antes de hacer clic.",
+            "C": "❌ Ignorar el enlace no te protege. Es mejor verificarlo para estar seguro."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "¿Cómo funciona VirusTotal cuando verificas un enlace o archivo?",
+          "opciones": [
+            "a) Compara el enlace con otros sitios web populares",
+            "b) Usa varios motores de antivirus para analizar el enlace o archivo",
+            "c) Solo revisa la dirección web sin analizar el contenido"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ VirusTotal no solo compara con sitios populares, utiliza múltiples antivirus para comprobar la seguridad.",
+            "B": "✅ ¡Correcto! VirusTotal escanea el archivo o enlace con varios motores de antivirus para verificar si contiene amenazas.",
+            "C": "❌ VirusTotal no solo revisa la dirección web; también analiza el contenido en busca de riesgos."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "Si VirusTotal muestra que un enlace o archivo tiene una amenaza, ¿qué deberías hacer?",
+          "opciones": [
+            "a) Abrirlo de todos modos, ya que podría ser un error",
+            "b) Ignorarlo y seguir con lo que estabas haciendo",
+            "c) Evitar hacer clic y eliminar el archivo o enlace"
+          ],
+          "respuesta_correcta": "C",
+          "retroalimentacion": {
+            "A": "❌ No es recomendable abrir un archivo o enlace marcado como peligroso.",
+            "B": "❌ Ignorar la alerta puede poner en riesgo tu dispositivo e información.",
+            "C": "✅ ¡Exacto! Si VirusTotal alerta de una amenaza, es mejor evitarlo completamente y eliminarlo."
+          }
+        }
+      ]
+    },
+    "6": {
+      "titulo": "✅ Módulo 6 – Protección Avanzada – No Pongas Datos Personales en Tus Contraseñas y Cómo Reportar un Incidente",
+      "preguntas": [
+        {
+          "numero": 1,
+          "pregunta": "¿Por qué es peligroso usar tu nombre o fecha de nacimiento en las contraseñas?",
+          "opciones": [
+            "a) Porque son fáciles de recordar",
+            "b) Porque los hackers pueden adivinarlas usando la ingeniería social",
+            "c) Porque los sitios web no permiten usar esa información"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Aunque sean fáciles de recordar, son extremadamente fáciles de adivinar.",
+            "B": "✅ ¡Correcto! Los hackers pueden usar tu información pública para adivinar contraseñas fácilmente.",
+            "C": "❌ Los sitios web pueden permitirlas, pero esto aumenta el riesgo de ataques."
+          }
+        },
+        {
+          "numero": 2,
+          "pregunta": "¿Qué debes hacer si crees que alguien ha accedido a tu cuenta sin permiso?",
+          "opciones": [
+            "a) Ignorar el incidente, ya que no es tan grave",
+            "b) Cambiar tus contraseñas inmediatamente y reportar el incidente",
+            "c) Esperar y ver si el hacker hace algo con tu cuenta"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Ignorar el incidente no ayudará a proteger tu información.",
+            "B": "✅ ¡Exacto! Cambiar las contraseñas rápidamente puede prevenir daños mayores y reportar ayuda a que otros también estén protegidos.",
+            "C": "❌ Esperar solo aumenta el riesgo. Es mejor actuar lo antes posible."
+          }
+        },
+        {
+          "numero": 3,
+          "pregunta": "¿Qué puede hacer un hacker con la información que publicas en tus redes sociales?",
+          "opciones": [
+            "a) Ayudarles a enviarte publicidad relevante",
+            "b) Utilizarla para adivinar contraseñas y acceder a tus cuentas",
+            "c) Mejorar tu perfil en línea"
+          ],
+          "respuesta_correcta": "B",
+          "retroalimentacion": {
+            "A": "❌ Aunque la información personal podría ser utilizada para publicidad, el riesgo real es que los hackers adivinen tus contraseñas.",
+            "B": "✅ ¡Correcto! Los hackers usan información personal publicada en redes sociales para manipularte o acceder a tus cuentas.",
+            "C": "❌ Mejorar tu perfil no es el objetivo de los hackers, lo que quieren es robar información."
+          }
+        }
+      ]
+    }
+  }
+}

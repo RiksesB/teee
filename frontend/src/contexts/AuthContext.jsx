@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -12,122 +13,104 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Verificar si hay sesión guardada
-    const savedUser = localStorage.getItem('niblion_user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (error) {
-        localStorage.removeItem('niblion_user');
+    // Verificar si hay sesión guardada y validarla con el backend
+    const checkAuth = async () => {
+      const savedUser = localStorage.getItem('niblion_user');
+      if (savedUser) {
+        try {
+          const userData = JSON.parse(savedUser);
+          // Validar token con el backend
+          const response = await api.get('/auth/me');
+          if (response.data.success) {
+            setUser(userData);
+          } else {
+            // Token inválido
+            localStorage.removeItem('niblion_user');
+            setUser(null);
+          }
+        } catch (error) {
+          console.error('Error validando sesión:', error);
+          localStorage.removeItem('niblion_user');
+          setUser(null);
+        }
       }
-    }
-    setLoading(false);
+      setLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (email, password) => {
     try {
-      // Mock users for testing - replace with real API call
-      const defaultUsers = {
-        'admin@niblion.com': {
-          id: 1,
-          email: 'admin@niblion.com',
-          name: 'Administrador Niblion',
-          role: 'admin',
-          password: 'admin123'
-        },
-        'client@techcorp.com': {
-          id: 2,
-          email: 'client@techcorp.com',
-          name: 'María González - TechCorp',
-          role: 'client',
-          password: 'client123'
-        },
-        'client2@startup.com': {
-          id: 3,
-          email: 'client2@startup.com',
-          name: 'Carlos Rodríguez - StartupXYZ',
-          role: 'client',
-          password: 'client123'
-        }
-      };
+      // Llamada real al backend
+      const response = await api.post('/auth/login', { email, password });
 
-      // Obtener usuarios registrados del localStorage
-      const registeredUsers = JSON.parse(localStorage.getItem('niblion_registered_users') || '{}');
-      
-      // Combinar usuarios por defecto con usuarios registrados
-      const allUsers = { ...defaultUsers, ...registeredUsers };
+      if (response.data.success) {
+        const { user: userData, accessToken, refreshToken } = response.data;
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
+        const user = {
+          id: userData.id,
+          email: userData.email,
+          name: userData.name,
+          role: userData.role,
+          companyName: userData.companyName,
+          credits: userData.credits,
+          token: accessToken,
+          refreshToken: refreshToken,
+        };
 
-      const user = allUsers[email];
-      
-      if (!user || user.password !== password) {
-        throw new Error('Credenciales inválidas');
+        setUser(user);
+        localStorage.setItem('niblion_user', JSON.stringify(user));
+
+        return { success: true, role: user.role };
+      } else {
+        throw new Error('Error al iniciar sesión');
       }
-
-      // Generate mock JWT token
-      const mockToken = `mock_jwt_token_${user.id}_${Date.now()}`;
-      
-      const userData = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        token: mockToken,
-      };
-
-      setUser(userData);
-      localStorage.setItem('niblion_user', JSON.stringify(userData));
-      
-      return { success: true, role: userData.role };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: error.message };
+      const errorMessage = error.response?.data?.message || error.message || 'Error al iniciar sesión';
+      return { success: false, error: errorMessage };
     }
   };
 
   const register = async (userData) => {
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Obtener usuarios registrados actuales
-      const registeredUsers = JSON.parse(localStorage.getItem('niblion_registered_users') || '{}');
-
-      // Verificar si el email ya existe
-      if (registeredUsers[userData.email]) {
-        throw new Error('Este correo electrónico ya está registrado');
-      }
-
-      // Crear nuevo usuario
-      const newUser = {
-        id: Date.now(),
+      // Llamada real al backend
+      const response = await api.post('/auth/register', {
         email: userData.email,
+        password: userData.password,
         name: userData.contactName || userData.companyName,
         companyName: userData.companyName,
         phone: userData.phone,
-        role: 'client', // Por defecto todos los registros son clientes
-        password: userData.password, // En producción, esto debe ser hasheado
         employees: userData.employees,
-        createdAt: new Date().toISOString(),
-        status: 'active',
-      };
+      });
 
-      // Guardar en localStorage
-      registeredUsers[userData.email] = newUser;
-      localStorage.setItem('niblion_registered_users', JSON.stringify(registeredUsers));
-
-      return { success: true, message: 'Usuario registrado exitosamente' };
+      if (response.data.success) {
+        return {
+          success: true,
+          message: response.data.message || 'Usuario registrado exitosamente',
+        };
+      } else {
+        throw new Error('Error al registrar usuario');
+      }
     } catch (error) {
       console.error('Register error:', error);
-      return { success: false, error: error.message };
+      const errorMessage = error.response?.data?.message || error.message || 'Error al registrar usuario';
+      return { success: false, error: errorMessage };
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('niblion_user');
+  const logout = async () => {
+    try {
+      // Llamar al endpoint de logout para invalidar el refresh token
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Error al hacer logout:', error);
+    } finally {
+      // Limpiar estado local siempre
+      setUser(null);
+      localStorage.removeItem('niblion_user');
+    }
   };
 
   const hasRole = (role) => {
