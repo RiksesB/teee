@@ -25,7 +25,7 @@ export const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   // Verificar si el usuario tiene el rol permitido
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
     // Redirigir al dashboard apropiado según su rol
-    const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+    const redirectPath = (user.role === 'admin' || user.role === 'super_admin') ? '/admin' : '/client';
     return <Navigate to={redirectPath} replace />;
   }
 
@@ -37,7 +37,7 @@ export const PublicRoute = ({ children }) => {
 
   if (user) {
     // Si ya está autenticado, redirigir según rol
-    const redirectPath = user.role === 'admin' ? '/admin' : '/client';
+    const redirectPath = (user.role === 'admin' || user.role === 'super_admin') ? '/admin' : '/client';
     return <Navigate to={redirectPath} replace />;
   }
 

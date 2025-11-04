@@ -11,6 +11,7 @@ import { QueueModule } from './modules/queue/queue.module';
 import { WhatsAppModule } from './modules/whatsapp/whatsapp.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CoursesModule } from './modules/courses/courses.module';
+import { UsersModule } from './modules/users/users.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 
 @Module({
@@ -31,6 +32,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
     WhatsAppModule,
     AuthModule,
     CoursesModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

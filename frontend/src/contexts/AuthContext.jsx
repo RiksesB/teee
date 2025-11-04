@@ -4,6 +4,7 @@ import api from '../services/api';
 const AuthContext = createContext(null);
 
 export const USER_ROLES = {
+  SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
   CLIENT: 'client',
 };
