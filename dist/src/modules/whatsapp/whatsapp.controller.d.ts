@@ -21,6 +21,7 @@ export declare class WhatsAppController {
     iniciarPrueba(body: {
         numeros: string[];
         usarPlantilla?: boolean;
+        courseId?: string;
     }): Promise<{
         success: boolean;
         message: string;

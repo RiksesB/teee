@@ -89,7 +89,8 @@ let WhatsAppController = WhatsAppController_1 = class WhatsAppController {
         return { status: 'ok' };
     }
     async iniciarPrueba(body) {
-        this.logger.log(`🚀 Iniciando curso para ${body.numeros.length} usuarios`);
+        const courseInfo = body.courseId ? `curso ID: ${body.courseId}` : 'curso por defecto';
+        this.logger.log(`🚀 Iniciando ${courseInfo} para ${body.numeros.length} usuarios`);
         try {
             const usarPlantilla = body.usarPlantilla !== undefined ? body.usarPlantilla : false;
             const resultados = [];
@@ -98,7 +99,7 @@ let WhatsAppController = WhatsAppController_1 = class WhatsAppController {
                 const batch = body.numeros.slice(i, i + batchSize);
                 const batchPromises = batch.map(async (numero) => {
                     try {
-                        await this.courseService.iniciarPruebaDirecta(numero, usarPlantilla);
+                        await this.courseService.iniciarPruebaDirecta(numero, usarPlantilla, body.courseId);
                         return { numero, success: true };
                     }
                     catch (error) {

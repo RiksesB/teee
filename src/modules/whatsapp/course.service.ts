@@ -4,6 +4,7 @@ import { SessionService } from './session.service';
 import { DatabaseService } from '../database/database.service';
 import { SurveyService } from './survey.service';
 import { ConfigService } from '@nestjs/config';
+import { CoursesService } from '../courses/courses.service';
 import { MODULOS, VIDEOS_MODULOS } from '../course/constants/modules.constant';
 import axios from 'axios';
 
@@ -37,7 +38,68 @@ export class CourseService {
     private readonly databaseService: DatabaseService,
     private readonly surveyService: SurveyService,
     private readonly configService: ConfigService,
+    private readonly coursesService: CoursesService,
   ) {}
+
+  /**
+   * Obtiene los datos del módulo desde la sesión (courseData de MongoDB o MODULOS hardcodeado)
+   * @param sesion - Sesión del usuario
+   * @param moduloIndex - Índice del módulo (1-6)
+   * @returns Datos del módulo
+   */
+  private getModuloData(sesion: any, moduloIndex: number): any {
+    if (sesion.courseData && sesion.courseData.modules) {
+      // Usar curso de MongoDB - los módulos están indexados desde 0
+      const modulo = sesion.courseData.modules[moduloIndex - 1];
+      if (!modulo) {
+        throw new Error(`Módulo ${moduloIndex} no encontrado en el curso ${sesion.courseData.title}`);
+      }
+
+      // Adaptar formato de MongoDB al formato esperado
+      return {
+        titulo: modulo.title,
+        preguntas: modulo.questions.map((q: any, index: number) => ({
+          numero: index + 1,
+          pregunta: q.question,
+          opciones: q.options,
+          respuesta_correcta: q.correctAnswer,
+          retroalimentacion: q.feedback,
+        })),
+        videoUrl: modulo.videoUrl,
+      };
+    } else {
+      // Usar curso hardcodeado
+      return MODULOS[moduloIndex];
+    }
+  }
+
+  /**
+   * Obtiene la URL del video del módulo
+   * @param sesion - Sesión del usuario
+   * @param moduloIndex - Índice del módulo (1-6)
+   * @returns URL del video
+   */
+  private getVideoUrl(sesion: any, moduloIndex: number): string {
+    if (sesion.courseData && sesion.courseData.modules) {
+      const modulo = sesion.courseData.modules[moduloIndex - 1];
+      return modulo?.videoUrl || '';
+    } else {
+      return VIDEOS_MODULOS[moduloIndex];
+    }
+  }
+
+  /**
+   * Obtiene el número total de módulos del curso
+   * @param sesion - Sesión del usuario
+   * @returns Número total de módulos
+   */
+  private getTotalModulos(sesion: any): number {
+    if (sesion.courseData && sesion.courseData.modules) {
+      return sesion.courseData.modules.length;
+    } else {
+      return 6; // Curso hardcodeado tiene 6 módulos
+    }
+  }
 
   /**
    * Randomiza las opciones de una pregunta para prevenir copia
@@ -117,7 +179,8 @@ export class CourseService {
     }
 
     const moduloUsuario = sesion.modulo;
-    const preguntaOriginal = MODULOS[moduloUsuario].preguntas[indicePregunta];
+    const moduloData = this.getModuloData(sesion, moduloUsuario);
+    const preguntaOriginal = moduloData.preguntas[indicePregunta];
 
     // Randomizar opciones para este usuario
     const randomizado = this.randomizarOpciones(preguntaOriginal, true);
@@ -277,11 +340,33 @@ export class CourseService {
   /**
    * Inicia la prueba directamente para un usuario
    * Limpia sesiones anteriores y comienza desde el módulo 1
+   * @param numeroUsuario - Número de WhatsApp del usuario
+   * @param usarPlantilla - Si se debe usar plantilla de WhatsApp
+   * @param courseId - ID del curso de MongoDB (opcional, usa curso por defecto si no se especifica)
    */
-  async iniciarPruebaDirecta(numeroUsuario: string, usarPlantilla: boolean = false): Promise<void> {
+  async iniciarPruebaDirecta(numeroUsuario: string, usarPlantilla: boolean = false, courseId?: string): Promise<void> {
     // Validar número de teléfono
     if (!numeroUsuario || typeof numeroUsuario !== 'string' || numeroUsuario.trim() === '') {
       throw new Error(`Número de teléfono inválido: ${numeroUsuario}`);
+    }
+
+    // Cargar curso desde MongoDB si se especifica courseId
+    let courseData: any = null;
+    if (courseId) {
+      try {
+        courseData = await this.coursesService.findOne(courseId);
+        this.logger.log(`📚 Curso cargado desde MongoDB: ${courseData.title} (ID: ${courseId})`);
+
+        // Validar que el curso tenga módulos
+        if (!courseData.modules || courseData.modules.length === 0) {
+          throw new Error(`El curso ${courseId} no tiene módulos configurados`);
+        }
+      } catch (error) {
+        this.logger.error(`❌ Error cargando curso ${courseId}:`, error);
+        throw new Error(`No se pudo cargar el curso: ${error.message}`);
+      }
+    } else {
+      this.logger.log(`📚 Usando curso por defecto (hardcodeado)`);
     }
 
     // Limpiar cualquier sesión anterior
@@ -300,18 +385,21 @@ export class CourseService {
       resultadosModulos: [],
       numeroUsuario: numeroUsuario,
       respuestasDetalladas: [], // Inicializar array de respuestas
+      courseData, // Guardar datos del curso en la sesión
+      courseId, // Guardar ID del curso para referencia
     };
 
     // Usar crearSesion y luego actualizar con datos adicionales
     this.sessionService.crearSesion(numeroUsuario, 1);
     this.sessionService.actualizarSesionUsuario(numeroUsuario, sessionData);
-    this.logger.log(`🆕 Nueva sesión creada para ${numeroUsuario}: Módulo 1`);
+    this.logger.log(`🆕 Nueva sesión creada para ${numeroUsuario}: Módulo 1${courseId ? ` - Curso: ${courseData.title}` : ' - Curso por defecto'}`);
 
     // Guardar datos de inicio de sesión
     await this.databaseService.guardarDatosUsuario({
       ...sessionData,
       evento: 'inicio_curso',
       usarPlantilla,
+      courseId,
     });
 
     try {
@@ -380,6 +468,14 @@ export class CourseService {
    * Envía video tutorial con sistema de fallback - NO BLOQUEA EL PROGRESO
    */
   private async enviarVideoTutorial(numeroUsuario: string, moduloActual: number): Promise<void> {
+    const sesion = this.sessionService.obtenerSesionUsuario(numeroUsuario);
+    const videoUrl = this.getVideoUrl(sesion, moduloActual);
+
+    if (!videoUrl) {
+      this.logger.warn(`No hay video configurado para módulo ${moduloActual}`);
+      return;
+    }
+
     const caption =
       `🎬 Video Tutorial - Módulo ${moduloActual}\n\n` +
       `📹 Te recomendamos ver este video para aprender sobre el tema.\n\n` +
@@ -387,14 +483,14 @@ export class CourseService {
 
     try {
       // Intentar enviar el video
-      await this.whatsappService.enviarVideo(numeroUsuario, VIDEOS_MODULOS[moduloActual], caption);
+      await this.whatsappService.enviarVideo(numeroUsuario, videoUrl, caption);
       this.logger.log(`Video del módulo ${moduloActual} enviado exitosamente`);
     } catch (error) {
       this.logger.error('Error enviando video, usando fallback:', error);
       // Fallback: enviar mensaje de texto con enlace
       const mensajeFallback =
         `🎬 Video Tutorial - Módulo ${moduloActual}\n\n` +
-        `📹 Puedes ver el video en: ${VIDEOS_MODULOS[moduloActual]}\n\n` +
+        `📹 Puedes ver el video en: ${videoUrl}\n\n` +
         `💡 Te recomendamos verlo para aprender sobre el tema.`;
       await this.whatsappService.enviarMensaje(numeroUsuario, mensajeFallback);
     }
@@ -412,8 +508,11 @@ export class CourseService {
       const moduloUsuario = sesionAnterior?.modulo || 1;
 
       // Validar que el módulo actual existe
-      if (!MODULOS[moduloUsuario]) {
-        this.logger.error(`Módulo ${moduloUsuario} no existe para usuario ${numeroUsuario}`);
+      let moduloData;
+      try {
+        moduloData = this.getModuloData(sesionAnterior, moduloUsuario);
+      } catch (error) {
+        this.logger.error(`Módulo ${moduloUsuario} no existe para usuario ${numeroUsuario}: ${error.message}`);
         return;
       }
 
@@ -429,7 +528,7 @@ export class CourseService {
 
       // Enviar título del módulo primero
       this.logger.log(`📋 Enviando título del módulo ${moduloUsuario} a ${numeroUsuario}`);
-      await this.whatsappService.enviarMensaje(numeroUsuario, MODULOS[moduloUsuario].titulo);
+      await this.whatsappService.enviarMensaje(numeroUsuario, moduloData.titulo);
 
       // Pequeña pausa antes de enviar la primera pregunta
       setTimeout(async () => {
@@ -508,7 +607,8 @@ export class CourseService {
 
     const moduloUsuario = sesion.modulo;
     const preguntaActualIndex = sesion.preguntaActual ?? 0;
-    const preguntaOriginal = MODULOS[moduloUsuario].preguntas[preguntaActualIndex];
+    const moduloData = this.getModuloData(sesion, moduloUsuario);
+    const preguntaOriginal = moduloData.preguntas[preguntaActualIndex];
 
     // Obtener mapeo de opciones randomizadas para esta pregunta
     const mapeo = sesion.mapeosPreguntas?.[preguntaActualIndex];
@@ -566,7 +666,7 @@ export class CourseService {
     sesion.ultimaActividad = new Date(); // Actualizar actividad
 
     // Verificar si hay más preguntas
-    if (sesion.preguntaActual < MODULOS[moduloUsuario].preguntas.length) {
+    if (sesion.preguntaActual < moduloData.preguntas.length) {
       // Pequeña pausa antes de enviar siguiente pregunta
       setTimeout(async () => {
         try {
@@ -580,10 +680,10 @@ export class CourseService {
       // Módulo completado - guardar resultado
       const resultadoModulo = {
         modulo: moduloUsuario,
-        titulo: MODULOS[moduloUsuario].titulo,
+        titulo: moduloData.titulo,
         respuestasCorrectas: sesion.respuestasCorrectas || 0,
-        totalPreguntas: MODULOS[moduloUsuario].preguntas.length,
-        porcentaje: ((sesion.respuestasCorrectas || 0) / MODULOS[moduloUsuario].preguntas.length) * 100,
+        totalPreguntas: moduloData.preguntas.length,
+        porcentaje: ((sesion.respuestasCorrectas || 0) / moduloData.preguntas.length) * 100,
       };
 
       sesion.resultadosModulos = sesion.resultadosModulos || [];
@@ -599,13 +699,15 @@ export class CourseService {
       // Mostrar resultado del módulo actual
       const resultado = this.generarResultadoModulo(
         sesion.respuestasCorrectas || 0,
-        MODULOS[moduloUsuario].preguntas.length,
+        moduloData.preguntas.length,
         moduloUsuario,
+        sesion,
       );
       await this.whatsappService.enviarMensaje(numeroUsuario, resultado);
 
       // Verificar si hay más módulos
-      if (moduloUsuario < 6) {
+      const totalModulos = this.getTotalModulos(sesion);
+      if (moduloUsuario < totalModulos) {
         // Avanzar al siguiente módulo para este usuario específico
         const siguienteModulo = moduloUsuario + 1;
 
@@ -686,10 +788,12 @@ export class CourseService {
   /**
    * Genera mensaje de resultado del módulo completado
    */
-  generarResultadoModulo(respuestasCorrectas: number, totalPreguntas: number, moduloNumero: number): string {
+  generarResultadoModulo(respuestasCorrectas: number, totalPreguntas: number, moduloNumero: number, sesion: any): string {
     const porcentaje = (respuestasCorrectas / totalPreguntas) * 100;
+    const moduloData = this.getModuloData(sesion, moduloNumero);
+    const totalModulos = this.getTotalModulos(sesion);
 
-    let mensaje = `🎉 ¡${MODULOS[moduloNumero].titulo} completado!\n\n`;
+    let mensaje = `🎉 ¡${moduloData.titulo} completado!\n\n`;
     mensaje += `📊 Resultado: ${respuestasCorrectas}/${totalPreguntas} respuestas correctas (${porcentaje.toFixed(1)}%)\n\n`;
 
     if (porcentaje >= 80) {
@@ -700,7 +804,7 @@ export class CourseService {
       mensaje += `📚 Es importante reforzar estos conceptos.`;
     }
 
-    if (moduloNumero < 6) {
+    if (moduloNumero < totalModulos) {
       mensaje += `\n\n🎬 Continuemos con el siguiente módulo...`;
     }
 
@@ -750,6 +854,7 @@ export class CourseService {
     moduloActual: number,
     respuestasCorrectasActual: number,
     preguntaActual: number,
+    sesion: any,
   ): string {
     this.logger.debug('=== DEBUG generarResumenParcial ===');
     this.logger.debug('resultadosModulos:', resultadosModulos);
@@ -777,10 +882,15 @@ export class CourseService {
       mensaje += `📈 ${respuestasCorrectasActual}/${preguntaActual} (${porcentajeActual.toFixed(1)}%) - En progreso\n\n`;
     } else {
       // Mostrar información del módulo actual aunque no haya progreso
-      if (moduloActual && MODULOS[moduloActual]) {
-        mensaje += `**Módulo actual (${moduloActual}):**\n`;
-        mensaje += `${MODULOS[moduloActual].titulo}\n`;
-        mensaje += `📈 No has respondido preguntas aún\n\n`;
+      if (moduloActual && sesion) {
+        try {
+          const moduloData = this.getModuloData(sesion, moduloActual);
+          mensaje += `**Módulo actual (${moduloActual}):**\n`;
+          mensaje += `${moduloData.titulo}\n`;
+          mensaje += `📈 No has respondido preguntas aún\n\n`;
+        } catch (error) {
+          this.logger.warn(`No se pudo obtener datos del módulo ${moduloActual}`);
+        }
       }
     }
 

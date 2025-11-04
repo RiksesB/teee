@@ -8,9 +8,10 @@ import { SurveyService } from './survey.service';
 import { MessageRouterService } from './message-router.service';
 import { DatabaseModule } from '../database/database.module';
 import { QueueModule } from '../queue/queue.module';
+import { CoursesModule } from '../courses/courses.module';
 
 @Module({
-  imports: [ConfigModule, DatabaseModule, QueueModule],
+  imports: [ConfigModule, DatabaseModule, QueueModule, CoursesModule],
   controllers: [WhatsAppController],
   providers: [
     WhatsAppService,

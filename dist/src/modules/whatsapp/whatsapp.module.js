@@ -17,12 +17,13 @@ const survey_service_1 = require("./survey.service");
 const message_router_service_1 = require("./message-router.service");
 const database_module_1 = require("../database/database.module");
 const queue_module_1 = require("../queue/queue.module");
+const courses_module_1 = require("../courses/courses.module");
 let WhatsAppModule = class WhatsAppModule {
 };
 exports.WhatsAppModule = WhatsAppModule;
 exports.WhatsAppModule = WhatsAppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule, database_module_1.DatabaseModule, queue_module_1.QueueModule],
+        imports: [config_1.ConfigModule, database_module_1.DatabaseModule, queue_module_1.QueueModule, courses_module_1.CoursesModule],
         controllers: [whatsapp_controller_1.WhatsAppController],
         providers: [
             whatsapp_service_1.WhatsAppService,

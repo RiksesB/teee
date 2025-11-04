@@ -17,6 +17,7 @@ const session_service_1 = require("./session.service");
 const database_service_1 = require("../database/database.service");
 const survey_service_1 = require("./survey.service");
 const config_1 = require("@nestjs/config");
+const courses_service_1 = require("../courses/courses.service");
 const modules_constant_1 = require("../course/constants/modules.constant");
 const axios_1 = require("axios");
 let CourseService = CourseService_1 = class CourseService {
@@ -25,13 +26,54 @@ let CourseService = CourseService_1 = class CourseService {
     databaseService;
     surveyService;
     configService;
+    coursesService;
     logger = new common_1.Logger(CourseService_1.name);
-    constructor(whatsappService, sessionService, databaseService, surveyService, configService) {
+    constructor(whatsappService, sessionService, databaseService, surveyService, configService, coursesService) {
         this.whatsappService = whatsappService;
         this.sessionService = sessionService;
         this.databaseService = databaseService;
         this.surveyService = surveyService;
         this.configService = configService;
+        this.coursesService = coursesService;
+    }
+    getModuloData(sesion, moduloIndex) {
+        if (sesion.courseData && sesion.courseData.modules) {
+            const modulo = sesion.courseData.modules[moduloIndex - 1];
+            if (!modulo) {
+                throw new Error(`Módulo ${moduloIndex} no encontrado en el curso ${sesion.courseData.title}`);
+            }
+            return {
+                titulo: modulo.title,
+                preguntas: modulo.questions.map((q, index) => ({
+                    numero: index + 1,
+                    pregunta: q.question,
+                    opciones: q.options,
+                    respuesta_correcta: q.correctAnswer,
+                    retroalimentacion: q.feedback,
+                })),
+                videoUrl: modulo.videoUrl,
+            };
+        }
+        else {
+            return modules_constant_1.MODULOS[moduloIndex];
+        }
+    }
+    getVideoUrl(sesion, moduloIndex) {
+        if (sesion.courseData && sesion.courseData.modules) {
+            const modulo = sesion.courseData.modules[moduloIndex - 1];
+            return modulo?.videoUrl || '';
+        }
+        else {
+            return modules_constant_1.VIDEOS_MODULOS[moduloIndex];
+        }
+    }
+    getTotalModulos(sesion) {
+        if (sesion.courseData && sesion.courseData.modules) {
+            return sesion.courseData.modules.length;
+        }
+        else {
+            return 6;
+        }
     }
     randomizarOpciones(pregunta, quitarUnaIncorrecta = false) {
         let indicesOriginales = pregunta.opciones.map((_, i) => i);
@@ -74,7 +116,8 @@ let CourseService = CourseService_1 = class CourseService {
             return;
         }
         const moduloUsuario = sesion.modulo;
-        const preguntaOriginal = modules_constant_1.MODULOS[moduloUsuario].preguntas[indicePregunta];
+        const moduloData = this.getModuloData(sesion, moduloUsuario);
+        const preguntaOriginal = moduloData.preguntas[indicePregunta];
         const randomizado = this.randomizarOpciones(preguntaOriginal, true);
         if (!sesion.mapeosPreguntas) {
             sesion.mapeosPreguntas = {};
@@ -196,9 +239,26 @@ let CourseService = CourseService_1 = class CourseService {
             }
         }
     }
-    async iniciarPruebaDirecta(numeroUsuario, usarPlantilla = false) {
+    async iniciarPruebaDirecta(numeroUsuario, usarPlantilla = false, courseId) {
         if (!numeroUsuario || typeof numeroUsuario !== 'string' || numeroUsuario.trim() === '') {
             throw new Error(`Número de teléfono inválido: ${numeroUsuario}`);
+        }
+        let courseData = null;
+        if (courseId) {
+            try {
+                courseData = await this.coursesService.findOne(courseId);
+                this.logger.log(`📚 Curso cargado desde MongoDB: ${courseData.title} (ID: ${courseId})`);
+                if (!courseData.modules || courseData.modules.length === 0) {
+                    throw new Error(`El curso ${courseId} no tiene módulos configurados`);
+                }
+            }
+            catch (error) {
+                this.logger.error(`❌ Error cargando curso ${courseId}:`, error);
+                throw new Error(`No se pudo cargar el curso: ${error.message}`);
+            }
+        }
+        else {
+            this.logger.log(`📚 Usando curso por defecto (hardcodeado)`);
         }
         if (this.sessionService.obtenerSesionUsuario(numeroUsuario)) {
             const sesionAnterior = this.sessionService.obtenerSesionUsuario(numeroUsuario);
@@ -213,14 +273,17 @@ let CourseService = CourseService_1 = class CourseService {
             resultadosModulos: [],
             numeroUsuario: numeroUsuario,
             respuestasDetalladas: [],
+            courseData,
+            courseId,
         };
         this.sessionService.crearSesion(numeroUsuario, 1);
         this.sessionService.actualizarSesionUsuario(numeroUsuario, sessionData);
-        this.logger.log(`🆕 Nueva sesión creada para ${numeroUsuario}: Módulo 1`);
+        this.logger.log(`🆕 Nueva sesión creada para ${numeroUsuario}: Módulo 1${courseId ? ` - Curso: ${courseData.title}` : ' - Curso por defecto'}`);
         await this.databaseService.guardarDatosUsuario({
             ...sessionData,
             evento: 'inicio_curso',
             usarPlantilla,
+            courseId,
         });
         try {
             this.logger.log(`🔍 DEBUG: usarPlantilla = ${usarPlantilla} para ${numeroUsuario}`);
@@ -273,17 +336,23 @@ let CourseService = CourseService_1 = class CourseService {
         }
     }
     async enviarVideoTutorial(numeroUsuario, moduloActual) {
+        const sesion = this.sessionService.obtenerSesionUsuario(numeroUsuario);
+        const videoUrl = this.getVideoUrl(sesion, moduloActual);
+        if (!videoUrl) {
+            this.logger.warn(`No hay video configurado para módulo ${moduloActual}`);
+            return;
+        }
         const caption = `🎬 Video Tutorial - Módulo ${moduloActual}\n\n` +
             `📹 Te recomendamos ver este video para aprender sobre el tema.\n\n` +
             `💡 Puedes continuar con las preguntas cuando quieras.`;
         try {
-            await this.whatsappService.enviarVideo(numeroUsuario, modules_constant_1.VIDEOS_MODULOS[moduloActual], caption);
+            await this.whatsappService.enviarVideo(numeroUsuario, videoUrl, caption);
             this.logger.log(`Video del módulo ${moduloActual} enviado exitosamente`);
         }
         catch (error) {
             this.logger.error('Error enviando video, usando fallback:', error);
             const mensajeFallback = `🎬 Video Tutorial - Módulo ${moduloActual}\n\n` +
-                `📹 Puedes ver el video en: ${modules_constant_1.VIDEOS_MODULOS[moduloActual]}\n\n` +
+                `📹 Puedes ver el video en: ${videoUrl}\n\n` +
                 `💡 Te recomendamos verlo para aprender sobre el tema.`;
             await this.whatsappService.enviarMensaje(numeroUsuario, mensajeFallback);
         }
@@ -293,8 +362,12 @@ let CourseService = CourseService_1 = class CourseService {
             this.logger.log(`📝 Iniciando formulario para usuario ${numeroUsuario}`);
             const sesionAnterior = this.sessionService.obtenerSesionUsuario(numeroUsuario);
             const moduloUsuario = sesionAnterior?.modulo || 1;
-            if (!modules_constant_1.MODULOS[moduloUsuario]) {
-                this.logger.error(`Módulo ${moduloUsuario} no existe para usuario ${numeroUsuario}`);
+            let moduloData;
+            try {
+                moduloData = this.getModuloData(sesionAnterior, moduloUsuario);
+            }
+            catch (error) {
+                this.logger.error(`Módulo ${moduloUsuario} no existe para usuario ${numeroUsuario}: ${error.message}`);
                 return;
             }
             const nuevaSesion = this.sessionService.actualizarSesionUsuario(numeroUsuario, {
@@ -307,7 +380,7 @@ let CourseService = CourseService_1 = class CourseService {
                 estado: 'en_formulario',
             });
             this.logger.log(`📋 Enviando título del módulo ${moduloUsuario} a ${numeroUsuario}`);
-            await this.whatsappService.enviarMensaje(numeroUsuario, modules_constant_1.MODULOS[moduloUsuario].titulo);
+            await this.whatsappService.enviarMensaje(numeroUsuario, moduloData.titulo);
             setTimeout(async () => {
                 try {
                     await this.enviarPregunta(numeroUsuario, 0);
@@ -364,7 +437,8 @@ let CourseService = CourseService_1 = class CourseService {
         }
         const moduloUsuario = sesion.modulo;
         const preguntaActualIndex = sesion.preguntaActual ?? 0;
-        const preguntaOriginal = modules_constant_1.MODULOS[moduloUsuario].preguntas[preguntaActualIndex];
+        const moduloData = this.getModuloData(sesion, moduloUsuario);
+        const preguntaOriginal = moduloData.preguntas[preguntaActualIndex];
         const mapeo = sesion.mapeosPreguntas?.[preguntaActualIndex];
         let respuestaCorrecta;
         let retroalimentacion;
@@ -402,7 +476,7 @@ let CourseService = CourseService_1 = class CourseService {
         }
         sesion.preguntaActual = preguntaActualIndex + 1;
         sesion.ultimaActividad = new Date();
-        if (sesion.preguntaActual < modules_constant_1.MODULOS[moduloUsuario].preguntas.length) {
+        if (sesion.preguntaActual < moduloData.preguntas.length) {
             setTimeout(async () => {
                 try {
                     await this.enviarPregunta(numeroUsuario, sesion.preguntaActual);
@@ -416,10 +490,10 @@ let CourseService = CourseService_1 = class CourseService {
         else {
             const resultadoModulo = {
                 modulo: moduloUsuario,
-                titulo: modules_constant_1.MODULOS[moduloUsuario].titulo,
+                titulo: moduloData.titulo,
                 respuestasCorrectas: sesion.respuestasCorrectas || 0,
-                totalPreguntas: modules_constant_1.MODULOS[moduloUsuario].preguntas.length,
-                porcentaje: ((sesion.respuestasCorrectas || 0) / modules_constant_1.MODULOS[moduloUsuario].preguntas.length) * 100,
+                totalPreguntas: moduloData.preguntas.length,
+                porcentaje: ((sesion.respuestasCorrectas || 0) / moduloData.preguntas.length) * 100,
             };
             sesion.resultadosModulos = sesion.resultadosModulos || [];
             sesion.resultadosModulos.push(resultadoModulo);
@@ -428,9 +502,10 @@ let CourseService = CourseService_1 = class CourseService {
                 respuestasDetalladas: sesion.respuestasDetalladas || [],
                 fecha_completado: new Date(),
             });
-            const resultado = this.generarResultadoModulo(sesion.respuestasCorrectas || 0, modules_constant_1.MODULOS[moduloUsuario].preguntas.length, moduloUsuario);
+            const resultado = this.generarResultadoModulo(sesion.respuestasCorrectas || 0, moduloData.preguntas.length, moduloUsuario, sesion);
             await this.whatsappService.enviarMensaje(numeroUsuario, resultado);
-            if (moduloUsuario < 6) {
+            const totalModulos = this.getTotalModulos(sesion);
+            if (moduloUsuario < totalModulos) {
                 const siguienteModulo = moduloUsuario + 1;
                 this.sessionService.actualizarSesionUsuario(numeroUsuario, {
                     ...sesion,
@@ -486,9 +561,11 @@ let CourseService = CourseService_1 = class CourseService {
             }
         }
     }
-    generarResultadoModulo(respuestasCorrectas, totalPreguntas, moduloNumero) {
+    generarResultadoModulo(respuestasCorrectas, totalPreguntas, moduloNumero, sesion) {
         const porcentaje = (respuestasCorrectas / totalPreguntas) * 100;
-        let mensaje = `🎉 ¡${modules_constant_1.MODULOS[moduloNumero].titulo} completado!\n\n`;
+        const moduloData = this.getModuloData(sesion, moduloNumero);
+        const totalModulos = this.getTotalModulos(sesion);
+        let mensaje = `🎉 ¡${moduloData.titulo} completado!\n\n`;
         mensaje += `📊 Resultado: ${respuestasCorrectas}/${totalPreguntas} respuestas correctas (${porcentaje.toFixed(1)}%)\n\n`;
         if (porcentaje >= 80) {
             mensaje += `🏆 ¡Excelente! Has dominado este módulo.`;
@@ -499,7 +576,7 @@ let CourseService = CourseService_1 = class CourseService {
         else {
             mensaje += `📚 Es importante reforzar estos conceptos.`;
         }
-        if (moduloNumero < 6) {
+        if (moduloNumero < totalModulos) {
             mensaje += `\n\n🎬 Continuemos con el siguiente módulo...`;
         }
         return mensaje;
@@ -528,7 +605,7 @@ let CourseService = CourseService_1 = class CourseService {
         mensaje += `¡Estás listo para defenderte de las amenazas cibernéticas! 🛡️💻`;
         return mensaje;
     }
-    generarResumenParcial(resultadosModulos, moduloActual, respuestasCorrectasActual, preguntaActual) {
+    generarResumenParcial(resultadosModulos, moduloActual, respuestasCorrectasActual, preguntaActual, sesion) {
         this.logger.debug('=== DEBUG generarResumenParcial ===');
         this.logger.debug('resultadosModulos:', resultadosModulos);
         this.logger.debug('moduloActual:', moduloActual);
@@ -551,10 +628,16 @@ let CourseService = CourseService_1 = class CourseService {
             mensaje += `📈 ${respuestasCorrectasActual}/${preguntaActual} (${porcentajeActual.toFixed(1)}%) - En progreso\n\n`;
         }
         else {
-            if (moduloActual && modules_constant_1.MODULOS[moduloActual]) {
-                mensaje += `**Módulo actual (${moduloActual}):**\n`;
-                mensaje += `${modules_constant_1.MODULOS[moduloActual].titulo}\n`;
-                mensaje += `📈 No has respondido preguntas aún\n\n`;
+            if (moduloActual && sesion) {
+                try {
+                    const moduloData = this.getModuloData(sesion, moduloActual);
+                    mensaje += `**Módulo actual (${moduloActual}):**\n`;
+                    mensaje += `${moduloData.titulo}\n`;
+                    mensaje += `📈 No has respondido preguntas aún\n\n`;
+                }
+                catch (error) {
+                    this.logger.warn(`No se pudo obtener datos del módulo ${moduloActual}`);
+                }
             }
         }
         const showPruebaTips = this.configService.get('MOSTRAR_TIP_PRUEBA', true);
@@ -582,6 +665,7 @@ exports.CourseService = CourseService = CourseService_1 = __decorate([
         session_service_1.SessionService,
         database_service_1.DatabaseService,
         survey_service_1.SurveyService,
-        config_1.ConfigService])
+        config_1.ConfigService,
+        courses_service_1.CoursesService])
 ], CourseService);
 //# sourceMappingURL=course.service.js.map

@@ -150,7 +150,8 @@ export class MessageRouterService {
             sesion.resultadosModulos || [],
             sesion.modulo || 1,
             sesion.respuestasCorrectas || 0,
-            sesion.preguntaActual || 0
+            sesion.preguntaActual || 0,
+            sesion
           );
           this.sessionService.eliminarSesion(numeroUsuario); // Limpiar sesión
           this.logger.log(`Sesión eliminada para usuario ${numeroUsuario}`);

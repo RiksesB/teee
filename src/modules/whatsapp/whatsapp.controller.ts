@@ -106,8 +106,13 @@ export class WhatsAppController {
    * POST /iniciar-prueba - Endpoint para iniciar curso
    */
   @Post('iniciar-prueba')
-  async iniciarPrueba(@Body() body: { numeros: string[]; usarPlantilla?: boolean }) {
-    this.logger.log(`🚀 Iniciando curso para ${body.numeros.length} usuarios`);
+  async iniciarPrueba(@Body() body: {
+    numeros: string[];
+    usarPlantilla?: boolean;
+    courseId?: string; // ID del curso de MongoDB (opcional, usa curso por defecto si no se especifica)
+  }) {
+    const courseInfo = body.courseId ? `curso ID: ${body.courseId}` : 'curso por defecto';
+    this.logger.log(`🚀 Iniciando ${courseInfo} para ${body.numeros.length} usuarios`);
 
     try {
       const usarPlantilla = body.usarPlantilla !== undefined ? body.usarPlantilla : false;
@@ -120,7 +125,7 @@ export class WhatsAppController {
 
         const batchPromises = batch.map(async (numero) => {
           try {
-            await this.courseService.iniciarPruebaDirecta(numero, usarPlantilla);
+            await this.courseService.iniciarPruebaDirecta(numero, usarPlantilla, body.courseId);
             return { numero, success: true };
           } catch (error: any) {
             this.logger.error(`Error iniciando curso para ${numero}:`, error);

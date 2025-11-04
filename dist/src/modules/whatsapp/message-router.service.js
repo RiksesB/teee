@@ -106,7 +106,7 @@ let MessageRouterService = MessageRouterService_1 = class MessageRouterService {
                     (sesion.enFormulario ||
                         sesion.estado === "viendo_video" ||
                         sesion.enEncuesta)) {
-                    respuesta = this.courseService.generarResumenParcial(sesion.resultadosModulos || [], sesion.modulo || 1, sesion.respuestasCorrectas || 0, sesion.preguntaActual || 0);
+                    respuesta = this.courseService.generarResumenParcial(sesion.resultadosModulos || [], sesion.modulo || 1, sesion.respuestasCorrectas || 0, sesion.preguntaActual || 0, sesion);
                     this.sessionService.eliminarSesion(numeroUsuario);
                     this.logger.log(`Sesión eliminada para usuario ${numeroUsuario}`);
                 }
