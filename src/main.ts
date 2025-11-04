@@ -70,8 +70,8 @@ async function bootstrap() {
     },
   });
 
-  // Prefix global para API (opcional)
-  // app.setGlobalPrefix('api');
+  // Prefix global para API
+  app.setGlobalPrefix('api');
 
   await app.listen(port);
 
