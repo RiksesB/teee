@@ -17,23 +17,24 @@ export const ClientDashboard = () => {
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-150">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Mi Dashboard</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Mi Dashboard</h1>
               <p className="mt-1 text-sm text-gray-500">Bienvenido, {user?.name}</p>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               <div className="text-right">
-                <p className="text-sm text-gray-500">Licencias disponibles</p>
-                <p className="text-2xl font-bold text-primary-600">
+                <p className="text-xs sm:text-sm text-gray-500">Licencias disponibles</p>
+                <p className="text-xl sm:text-2xl font-bold text-primary-600">
                   {userStats.licensesAvailable}/{userStats.licensesTotal}
                 </p>
               </div>
-              <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <button className="bg-primary-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2 text-sm sm:text-base whitespace-nowrap">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                 </svg>
-                Nueva Campaña
+                <span className="hidden sm:inline">Nueva Campaña</span>
+                <span className="sm:hidden">Nueva</span>
               </button>
             </div>
           </div>
@@ -80,7 +81,7 @@ export const ClientDashboard = () => {
         {/* Tabs Navigation */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-150 mb-6">
           <div className="border-b border-gray-150">
-            <nav className="-mb-px flex space-x-8 px-6" aria-label="Tabs">
+            <nav className="-mb-px flex space-x-4 sm:space-x-8 px-2 sm:px-6 overflow-x-auto" aria-label="Tabs">
               {[
                 { id: 'catalog', name: 'Catálogo de Cursos', icon: '📚' },
                 { id: 'licenses', name: 'Mis Licencias', icon: '🎫' },
@@ -94,17 +95,17 @@ export const ClientDashboard = () => {
                     activeTab === tab.id
                       ? 'border-primary-500 text-primary-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 transition-colors`}
+                  } whitespace-nowrap py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors`}
                 >
-                  <span>{tab.icon}</span>
-                  {tab.name}
+                  <span className="text-sm sm:text-base">{tab.icon}</span>
+                  <span className="hidden sm:inline">{tab.name}</span>
                 </button>
               ))}
             </nav>
           </div>
 
           {/* Tab Content */}
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {activeTab === 'catalog' && <CatalogTab />}
             {activeTab === 'licenses' && <LicensesTab userStats={userStats} />}
             {activeTab === 'campaigns' && <CampaignsTab />}
@@ -183,15 +184,15 @@ const CatalogTab = () => {
 
 const LicensesTab = ({ userStats }) => (
   <div>
-    <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-6 mb-6">
-      <div className="flex items-center justify-between">
+    <div className="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-xl p-4 sm:p-6 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             {userStats.licensesAvailable} licencias disponibles
           </h3>
-          <p className="text-gray-600">De un total de {userStats.licensesTotal} adquiridas</p>
+          <p className="text-sm sm:text-base text-gray-600">De un total de {userStats.licensesTotal} adquiridas</p>
         </div>
-        <button className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium">
+        <button className="bg-primary-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium text-sm sm:text-base whitespace-nowrap">
           Comprar Más Licencias
         </button>
       </div>

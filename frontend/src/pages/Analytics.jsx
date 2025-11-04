@@ -77,60 +77,119 @@ export function Analytics() {
   const ModuleStatsTable = () => (
     <div className="card">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-medium text-gray-900">
+        <h3 className="text-base sm:text-lg font-medium text-gray-900">
           Estadísticas por Módulo
         </h3>
       </div>
-      
-      <div className="overflow-x-auto">
+
+      {/* Mobile View - Cards */}
+      <div className="md:hidden space-y-4">
+        {analytics.moduleStats.map((module, index) => (
+          <div key={index} className="bg-gray-75 rounded-lg p-4 border border-gray-150">
+            <div className="mb-3">
+              <div className="text-sm font-medium text-gray-900">
+                Módulo {module.moduleId}
+              </div>
+              <div className="text-xs text-gray-500">
+                {module.title}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 text-sm mb-3">
+              <div>
+                <div className="text-xs text-gray-500">Participantes</div>
+                <div className="font-semibold text-gray-900">{module.totalParticipants}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Completados</div>
+                <div className="font-semibold text-gray-900">{module.completed}</div>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Puntuación</div>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  module.averageScore >= 80 ? 'bg-green-100 text-green-800' :
+                  module.averageScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-red-100 text-red-800'
+                }`}>
+                  {Math.round(module.averageScore)}%
+                </span>
+              </div>
+              <div>
+                <div className="text-xs text-gray-500">Tiempo</div>
+                <div className="font-semibold text-gray-900">{formatTime(module.averageTime)}</div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-gray-500">Tasa de Éxito</span>
+                <span className="font-semibold text-gray-900">
+                  {Math.round((module.completed / module.totalParticipants) * 100)}%
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-green-600 h-2 rounded-full"
+                  style={{
+                    width: `${(module.completed / module.totalParticipants) * 100}%`
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop View - Table */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-150">
           <thead className="bg-gray-75">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Módulo
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Participantes
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Completados
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Tasa de Éxito
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Puntuación Promedio
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Puntuación
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tiempo Promedio
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tiempo
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-150">
             {analytics.moduleStats.map((module, index) => (
               <tr key={index} className="hover:bg-gray-75">
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">
                     Módulo {module.moduleId}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-xs text-gray-500">
                     {module.title}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {module.totalParticipants}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {module.completed}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="text-sm text-gray-900">
                       {Math.round((module.completed / module.totalParticipants) * 100)}%
                     </div>
-                    <div className="ml-2 w-16 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-green-600 h-2 rounded-full" 
+                    <div className="ml-2 w-12 lg:w-16 bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-green-600 h-2 rounded-full"
                         style={{
                           width: `${(module.completed / module.totalParticipants) * 100}%`
                         }}
@@ -138,7 +197,7 @@ export function Analytics() {
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                     module.averageScore >= 80 ? 'bg-green-100 text-green-800' :
                     module.averageScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
@@ -147,7 +206,7 @@ export function Analytics() {
                     {Math.round(module.averageScore)}%
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {formatTime(module.averageTime)}
                 </td>
               </tr>
@@ -198,15 +257,15 @@ export function Analytics() {
 
   const TimeDistributionChart = () => (
     <div className="card">
-      <h3 className="text-lg font-medium text-gray-900 mb-4">
+      <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">
         Distribución Horaria de Actividad
       </h3>
-      
-      <div className="grid grid-cols-6 gap-2">
+
+      <div className="grid grid-cols-4 sm:grid-cols-6 gap-1 sm:gap-2">
         {Object.entries(analytics.timeDistribution).map(([hour, count]) => (
           <div key={hour} className="text-center">
             <div className="text-xs text-gray-500 mb-1">{hour}:00</div>
-            <div 
+            <div
               className="bg-blue-200 rounded"
               style={{
                 height: `${Math.max(20, (count / Math.max(...Object.values(analytics.timeDistribution))) * 60)}px`
@@ -311,17 +370,17 @@ export function Analytics() {
 
       {/* Export Options */}
       <div className="card">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">
+        <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-4">
           Exportar Datos
         </h3>
-        <div className="flex space-x-3">
-          <button 
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button
             onClick={() => window.open(`/api/analytics/export?format=csv&period=${timeRange}`)}
             className="btn-secondary"
           >
             Descargar CSV
           </button>
-          <button 
+          <button
             onClick={() => window.open(`/api/analytics/export?format=pdf&period=${timeRange}`)}
             className="btn-secondary"
           >

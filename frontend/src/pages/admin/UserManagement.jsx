@@ -140,26 +140,101 @@ export const UserManagement = () => {
 
       {/* Users Table */}
       <div className="card overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile View - Cards */}
+        <div className="md:hidden space-y-4 p-4">
+          {users.map((user) => (
+            <div key={user.id} className="bg-gray-75 rounded-lg p-4 border border-gray-150">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start gap-3 flex-1">
+                  <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center">
+                    <span className="text-primary-700 font-semibold">
+                      {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-gray-900">
+                      {user.name}
+                    </div>
+                    <div className="text-xs text-gray-500 truncate">
+                      {user.email}
+                    </div>
+                    {user.companyName && (
+                      <div className="text-xs text-gray-400">
+                        {user.companyName}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                {user.isRegistered && (
+                  <button
+                    onClick={() => deleteUser(user.email)}
+                    className="text-red-600 hover:text-red-900 transition-colors ml-2"
+                    title="Eliminar usuario"
+                  >
+                    <TrashIcon className="w-5 h-5" />
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className={`inline-flex items-center px-2 py-1 rounded-full font-medium ${
+                    user.role === 'admin'
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-blue-100 text-blue-800'
+                  }`}>
+                    {user.role === 'admin' && <ShieldCheckIcon className="w-3 h-3 mr-1" />}
+                    {user.role === 'admin' ? 'Admin' : 'Cliente'}
+                  </span>
+                </div>
+                <div>
+                  <span className="inline-flex items-center px-2 py-1 rounded-full font-medium bg-green-100 text-green-800">
+                    <CheckCircleIcon className="w-3 h-3 mr-1" />
+                    Activo
+                  </span>
+                </div>
+                <div className="col-span-2">
+                  <span className={`inline-flex items-center px-2 py-1 rounded-full font-medium ${
+                    user.isRegistered
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {user.isRegistered ? '✨ Registrado' : '🔒 Sistema'}
+                  </span>
+                </div>
+                <div className="col-span-2 text-gray-500 mt-1">
+                  {new Date(user.createdAt).toLocaleDateString('es-ES', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop View - Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-150">
             <thead className="bg-gray-75">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Usuario
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Rol
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Estado
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Fecha de Registro
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Fecha
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Origen
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Acciones
                 </th>
               </tr>
@@ -167,7 +242,7 @@ export const UserManagement = () => {
             <tbody className="bg-white divide-y divide-gray-150">
               {users.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-75 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
                         <span className="text-primary-700 font-semibold text-sm">
@@ -189,39 +264,39 @@ export const UserManagement = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.role === 'admin' 
-                        ? 'bg-purple-100 text-purple-800' 
+                      user.role === 'admin'
+                        ? 'bg-purple-100 text-purple-800'
                         : 'bg-blue-100 text-blue-800'
                     }`}>
                       {user.role === 'admin' && <ShieldCheckIcon className="w-3 h-3 mr-1" />}
-                      {user.role === 'admin' ? 'Administrador' : 'Cliente'}
+                      {user.role === 'admin' ? 'Admin' : 'Cliente'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       <CheckCircleIcon className="w-3 h-3 mr-1" />
                       Activo
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(user.createdAt).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric'
                     })}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      user.isRegistered 
-                        ? 'bg-green-100 text-green-800' 
+                      user.isRegistered
+                        ? 'bg-green-100 text-green-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
                       {user.isRegistered ? '✨ Registrado' : '🔒 Sistema'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     {user.isRegistered ? (
                       <button
                         onClick={() => deleteUser(user.email)}

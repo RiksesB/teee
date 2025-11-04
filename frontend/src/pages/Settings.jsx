@@ -262,7 +262,7 @@ export function Settings() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   App ID
@@ -587,8 +587,8 @@ export function Settings() {
             </p>
           </div>
           
-          <div className="flex space-x-3">
-            <button 
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
               onClick={() => {
                 if (confirm('¿Estás seguro de que quieres reiniciar todas las sesiones activas?')) {
                   fetch('/api/admin/reset-sessions', { method: 'POST' });
@@ -598,8 +598,8 @@ export function Settings() {
             >
               Reiniciar Todas las Sesiones
             </button>
-            
-            <button 
+
+            <button
               onClick={() => {
                 if (confirm('¿Estás seguro de que quieres limpiar todos los logs del sistema?')) {
                   fetch('/api/admin/clear-logs', { method: 'POST' });
