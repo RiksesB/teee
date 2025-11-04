@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 /**
  * Schema de Usuario para autenticación y gestión de cuentas
- * Soporta roles de Admin y Client con información específica
+ * Soporta roles: Super Admin (gestión total), Admin (gestión de clientes) y Client (organizaciones)
  */
 @Schema({
   timestamps: true,
@@ -21,7 +21,7 @@ export class User extends Document {
 
   @Prop({
     required: true,
-    enum: ['admin', 'client'],
+    enum: ['super_admin', 'admin', 'client'],
     default: 'client'
   })
   role: string;

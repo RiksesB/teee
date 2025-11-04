@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 
@@ -30,6 +31,45 @@ async function bootstrap() {
     }),
   );
 
+  // Configurar Swagger/OpenAPI Documentation
+  const config = new DocumentBuilder()
+    .setTitle('Niblion API')
+    .setDescription('API REST para gestión de cursos de ciberseguridad y campañas de capacitación vía WhatsApp Business')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Ingrese su token JWT',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
+    .addTag('Autenticación', 'Endpoints de autenticación y gestión de tokens')
+    .addTag('Cursos', 'Gestión de cursos de capacitación')
+    .addTag('WhatsApp', 'Integración con WhatsApp Business API')
+    .addTag('Usuarios', 'Gestión de usuarios y perfiles')
+    .addTag('Campañas', 'Gestión de campañas de capacitación')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document, {
+    customSiteTitle: 'Niblion API Documentation',
+    customfavIcon: 'https://nestjs.com/img/logo-small.svg',
+    customCss: `
+      .topbar-wrapper img { content:url('https://nestjs.com/img/logo-small.svg'); width:120px; height:auto; }
+      .swagger-ui .topbar { background-color: #1a202c; }
+    `,
+    swaggerOptions: {
+      persistAuthorization: true,
+      docExpansion: 'none',
+      filter: true,
+      showRequestDuration: true,
+    },
+  });
+
   // Prefix global para API (opcional)
   // app.setGlobalPrefix('api');
 
@@ -45,6 +85,7 @@ async function bootstrap() {
   ║   🔄 In-Memory Queue Active                              ║
   ║                                                           ║
   ║   🌐 Server: http://localhost:${port.toString().padEnd(27)}║
+  ║   📚 Swagger: http://localhost:${port}/api/docs${' '.repeat(18)}║
   ║   🔗 CORS: ${corsOrigin.padEnd(42)}║
   ║                                                           ║
   ╚═══════════════════════════════════════════════════════════╝
