@@ -51,7 +51,7 @@ export class UsersService {
       this.logger.log(`Nuevo usuario creado: ${saved.email} (ID: ${saved._id})`);
 
       // No devolver la contraseña
-      const userObject = saved.toObject();
+      const userObject: any = saved.toObject();
       delete userObject.password;
 
       return {
@@ -174,7 +174,7 @@ export class UsersService {
       this.logger.log(`Usuario actualizado: ${id}`);
 
       // No devolver la contraseña
-      const userObject = updated.toObject();
+      const userObject: any = updated.toObject();
       delete userObject.password;
       delete userObject.refreshToken;
 
