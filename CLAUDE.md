@@ -14,25 +14,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Business Model**: Pay-per-person ($5.99 USD / Bs. 220 VES) with credit-based system
 
 ### Architecture Status
-**Backend Migration**: The NestJS backend is ~90% complete (not 70% as older docs state):
+**Backend Migration**: The NestJS backend is 95% complete:
 - ✅ WhatsApp course delivery fully functional (95% complete)
 - ✅ Database module with MongoDB + Mongoose
 - ✅ In-memory queue system (simpler than originally planned BullMQ)
 - ✅ 6 educational modules with question randomization
-- ❌ Auth module (JWT planned but not implemented)
-- ❌ Analytics REST API for frontend
+- ✅ **Auth module with JWT (COMPLETE)** - Full authentication system implemented
+- ✅ User schema in MongoDB with role-based access
+- ❌ Analytics REST API for frontend (database has methods but no controller)
 
 **Note**: `secure-fortress-06743/` contains the working Express.js prototype currently on Heroku. It serves as the reference implementation while NestJS migration completes.
 
 ## Development Commands
 
-### Backend NestJS (Primary - 90% Complete)
+### Backend NestJS (Primary - 95% Complete)
 ```bash
 cd backend-nestjs
 npm install           # Install dependencies
 npm run start:dev     # Start with hot reload (port 3000)
 npm run build         # Build for production
 npm run start:prod    # Production mode
+npm run create-admin  # Create default admin user (admin@niblion.com / admin123)
 npm run lint          # Run ESLint
 ```
 
@@ -84,11 +86,11 @@ cd frontend && npm run dev
 - **TypeScript 5**: Full type safety across the application
 
 **Modules:**
-- `DatabaseModule`: ✅ MongoDB with 3 schemas (UserSession, QuizResponse, SurveyResponse)
+- `DatabaseModule`: ✅ MongoDB with 4 schemas (User, UserSession, QuizResponse, SurveyResponse)
 - `QueueModule`: ✅ In-memory queue service (simpler than BullMQ, no external deps)
 - `WhatsAppModule`: ✅ 95% complete - All messaging, session management, course flow
 - `CourseModule`: ✅ 6 educational modules + quiz constants
-- `AuthModule`: ❌ Not implemented (JWT config exists but unused)
+- `AuthModule`: ✅ **COMPLETE** - JWT authentication, role-based guards, user management
 - `AnalyticsModule`: ❌ No REST API (database has methods but no controller)
 
 #### Backend Legacy (`/secure-fortress-06743`) - Production Reference
@@ -149,7 +151,8 @@ src/
 ├── modules/
 │   ├── database/                           # ✅ COMPLETE
 │   │   ├── schemas/
-│   │   │   ├── user-session.schema.ts      # Session tracking
+│   │   │   ├── user.schema.ts              # User accounts (JWT auth)
+│   │   │   ├── user-session.schema.ts      # WhatsApp session tracking
 │   │   │   ├── quiz-response.schema.ts     # Quiz answers
 │   │   │   └── survey-response.schema.ts   # Post-course survey
 │   │   ├── database.module.ts
@@ -163,21 +166,33 @@ src/
 │   │       └── survey.constant.ts          # 5 survey questions
 │   ├── whatsapp/                           # ✅ 95% COMPLETE
 │   │   ├── whatsapp.module.ts
-│   │   ├── whatsapp.controller.ts          # All endpoints working
+│   │   ├── whatsapp.controller.ts          # All endpoints working (@Public())
 │   │   ├── whatsapp.service.ts             # All messaging functions
 │   │   ├── session.service.ts              # Session management
 │   │   ├── course.service.ts               # Course flow logic (813 lines)
 │   │   ├── survey.service.ts               # Survey handling
 │   │   └── message-router.service.ts       # Message routing
-│   ├── auth/                               # ❌ NOT IMPLEMENTED
-│   │   └── (empty directories)
+│   ├── auth/                               # ✅ COMPLETE
+│   │   ├── decorators/
+│   │   │   ├── current-user.decorator.ts   # @CurrentUser() decorator
+│   │   │   ├── public.decorator.ts         # @Public() decorator
+│   │   │   └── roles.decorator.ts          # @Roles() decorator
+│   │   ├── dto/
+│   │   │   ├── login.dto.ts                # Login validation
+│   │   │   └── register.dto.ts             # Register validation
+│   │   ├── guards/
+│   │   │   ├── jwt-auth.guard.ts           # JWT authentication guard (GLOBAL)
+│   │   │   └── roles.guard.ts              # Role-based access control
+│   │   ├── strategies/
+│   │   │   └── jwt.strategy.ts             # Passport JWT strategy
+│   │   ├── auth.controller.ts              # Login, register, me, logout, refresh
+│   │   ├── auth.service.ts                 # Auth logic with bcrypt
+│   │   └── auth.module.ts                  # Auth module with Passport & JWT
 │   └── analytics/                          # ❌ NOT IMPLEMENTED
-│       └── (empty directories)
-├── common/                                 # ⚠️ MINIMAL
-│   └── (empty directories - DTOs not created)
+│       └── (empty directories - no controller)
 ├── config/
-│   └── configuration.ts                    # ✅ Full config object
-├── app.module.ts                           # ✅ Imports all modules
+│   └── configuration.ts                    # ✅ Full config object (incl. JWT)
+├── app.module.ts                           # ✅ Imports all modules + global JWT guard
 └── main.ts                                 # ✅ CORS + validation
 ```
 
@@ -188,9 +203,12 @@ src/
 - ✅ Certificate generation + survey
 - ✅ MongoDB analytics storage
 - ✅ Automatic session cleanup
-- ❌ No JWT auth (blocks frontend integration)
+- ✅ **JWT authentication with role-based access control**
+- ✅ **User management (register, login, logout, refresh tokens)**
+- ✅ **Frontend-backend integration ready** (AuthContext updated)
+- ✅ Auth DTOs with class-validator
 - ❌ No Analytics REST API
-- ❌ DTOs not used (validation exists but not applied)
+- ❌ DTOs not used in other modules (validation exists but not applied)
 
 #### WhatsApp Course Delivery Flow
 
@@ -248,17 +266,17 @@ src/
 - `GET /health` - Health check with session statistics
   - Returns: `{ status, timestamp, sessions: { total, enFormulario, enEncuesta, enPrueba } }`
 
-#### Frontend API (Expected, not fully implemented)
-The frontend expects these endpoints from a future backend API:
+#### Authentication Endpoints (✅ IMPLEMENTED)
+All auth endpoints are functional and connected to frontend:
 
-**Public**
-- `GET /` - Landing page
-- `POST /api/public/contact` - Contact form submission
+**Public Routes:**
+- `POST /auth/login` - User login (returns JWT tokens)
+- `POST /auth/register` - Register new client account
+- `POST /auth/refresh` - Refresh access token
 
-**Authentication**
-- `POST /api/auth/login` - User login (JWT)
-- `POST /api/auth/refresh` - Refresh access token
-- `POST /api/auth/logout` - Logout
+**Protected Routes (require JWT):**
+- `GET /auth/me` - Get current user data
+- `POST /auth/logout` - Logout (invalidates refresh token)
 
 **Client Routes**
 - `GET /api/client/courses` - List available courses
@@ -305,18 +323,20 @@ MAX_CONCURRENT_SESSIONS=100
 # CORS
 CORS_ORIGIN=http://localhost:5173
 
-# JWT (configured but not used)
-JWT_SECRET=your_secret_key
+# JWT Authentication
+JWT_SECRET=your_secret_key_change_in_production
 JWT_EXPIRATION=1d
 ```
 
 #### Backend Legacy (`.env` in `/secure-fortress-06743`)
 Same as NestJS but without SESSION_TIMEOUT_MINUTES and MAX_CONCURRENT_SESSIONS.
 
-#### Frontend (`.env` in `/frontend`)
+#### Frontend (`.env.development` in `/frontend`)
 ```env
-VITE_API_URL=http://localhost:3000/api
+VITE_API_URL=http://localhost:3000
 ```
+
+**Note**: Frontend connects directly to backend root, not `/api` prefix.
 
 ### Payment System
 
@@ -522,8 +542,10 @@ getAllCompletedSurveys()
 - No external dependencies (Redis-free)
 
 #### Frontend Architecture
-- **Mock Authentication**: `AuthContext.jsx` has hardcoded test users (admin/client roles)
-- **API Integration**: Frontend ready but backend REST API not implemented yet
+- **Real Authentication**: `AuthContext.jsx` connects to NestJS backend via JWT
+- **Auth Flow**: Login → JWT tokens → Axios interceptors add Bearer token → Protected routes
+- **Token Management**: Access token (1d) + Refresh token (7d) stored in localStorage
+- **API Integration**: Auth endpoints fully functional, other endpoints awaiting implementation
 - **Payment UI**: Complete UI but no backend endpoints (`paymentService.js` has placeholders)
 - **i18n**: Custom context-based system, not react-i18next
 - **Protected Routes**: `ProtectedRoute.jsx` checks role from AuthContext
@@ -536,9 +558,161 @@ getAllCompletedSurveys()
 - Certificate image must be accessible via CDN (currently DigitalOcean)
 
 #### Known Gaps
-- ❌ No JWT auth → Frontend can't connect to NestJS backend yet
 - ❌ No Analytics REST API → Dashboards can't fetch data
-- ❌ No DTOs validation → Input not validated (security concern)
+- ❌ DTOs not used in non-auth modules → Input not fully validated
 - ❌ No tests → 0% coverage
 - ❌ Payment endpoints not implemented
 - ❌ Gophish integration placeholder only
+- ❌ No admin user seeding script (use `npm run create-admin` to create default admin)
+
+## Authentication System (NestJS + React)
+
+### Overview
+Complete JWT-based authentication system with bcrypt password hashing, refresh tokens, and role-based access control.
+
+### Backend Implementation
+
+**Architecture:**
+- Global `JwtAuthGuard` protects all routes by default
+- Use `@Public()` decorator to mark public routes (e.g., webhooks)
+- Use `@Roles('admin', 'client')` + `RolesGuard` for role-specific routes
+- Use `@CurrentUser()` decorator to access authenticated user in route handlers
+
+**Key Files:**
+- `src/modules/auth/auth.service.ts` - Login/register logic, bcrypt hashing, JWT generation
+- `src/modules/auth/strategies/jwt.strategy.ts` - Passport JWT validation
+- `src/modules/auth/guards/jwt-auth.guard.ts` - Global authentication guard
+- `src/modules/database/schemas/user.schema.ts` - User model with roles
+
+**User Schema:**
+```typescript
+{
+  email: string,           // Unique, lowercase
+  password: string,        // Bcrypt hashed (10 rounds)
+  name: string,
+  role: 'admin' | 'client',
+  companyName?: string,
+  phone?: string,
+  employees?: number,
+  credits: number,         // For credit-based billing
+  status: 'active' | 'inactive' | 'suspended',
+  refreshToken?: string,   // Stored refresh token
+  lastLoginAt?: Date,
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+**Creating Admin User:**
+```bash
+cd backend-nestjs
+npm run create-admin
+# Creates: admin@niblion.com / admin123
+```
+
+**Example Protected Route:**
+```typescript
+import { Public } from '../modules/auth/decorators/public.decorator';
+import { Roles } from '../modules/auth/decorators/roles.decorator';
+import { RolesGuard } from '../modules/auth/guards/roles.guard';
+import { CurrentUser } from '../modules/auth/decorators/current-user.decorator';
+
+// Public route (no auth required)
+@Public()
+@Get('public')
+async publicRoute() {
+  return { message: 'Public access' };
+}
+
+// Protected route (auth required, any role)
+@Get('profile')
+async getProfile(@CurrentUser() user: any) {
+  return { user };
+}
+
+// Admin-only route
+@UseGuards(RolesGuard)
+@Roles('admin')
+@Get('admin-only')
+async adminRoute() {
+  return { message: 'Admin access' };
+}
+```
+
+### Frontend Implementation
+
+**AuthContext Integration:**
+- Frontend connects to backend via `/auth/login`, `/auth/register`, etc.
+- JWT tokens stored in localStorage (`niblion_user`)
+- Axios interceptor adds `Authorization: Bearer <token>` to all requests
+- Auto-validates session on app load via `/auth/me`
+
+**Key Files:**
+- `frontend/src/contexts/AuthContext.jsx` - Auth state management
+- `frontend/src/services/api.js` - Axios instance with JWT interceptors
+- `frontend/src/components/auth/ProtectedRoute.jsx` - Route guards
+
+**Usage in Components:**
+```jsx
+import { useAuth } from '../contexts/AuthContext';
+
+function MyComponent() {
+  const { user, login, logout, register } = useAuth();
+
+  const handleLogin = async () => {
+    const result = await login('user@example.com', 'password');
+    if (result.success) {
+      // Redirected based on role
+    }
+  };
+
+  return <div>Welcome {user?.name}</div>;
+}
+```
+
+### Token Flow
+1. **Login**: User sends email/password → Backend validates → Returns `{ accessToken, refreshToken, user }`
+2. **Storage**: Frontend stores tokens in localStorage
+3. **Requests**: Axios interceptor adds `Authorization: Bearer <accessToken>` header
+4. **Validation**: Backend `JwtAuthGuard` validates token → Extracts user → Attaches to request
+5. **Refresh**: When access token expires (1d), use refresh token (7d) via `/auth/refresh`
+6. **Logout**: Frontend calls `/auth/logout` → Backend invalidates refresh token → Clears localStorage
+
+### Security Notes
+- **Passwords**: Hashed with bcrypt (10 rounds)
+- **JWT Secret**: Must be strong in production (configure `JWT_SECRET` env var)
+- **Token Expiry**: Access token 1 day, refresh token 7 days
+- **CORS**: Configure `CORS_ORIGIN` to match frontend domain
+- **MongoDB**: User IP must be whitelisted in MongoDB Atlas for development
+
+### Testing Authentication
+
+**Register Client:**
+```bash
+curl -X POST http://localhost:3000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@company.com",
+    "password": "password123",
+    "name": "Test User",
+    "companyName": "Test Company",
+    "phone": "+1234567890",
+    "employees": 10
+  }'
+```
+
+**Login:**
+```bash
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "admin@niblion.com", "password": "admin123"}'
+```
+
+**Access Protected Route:**
+```bash
+curl http://localhost:3000/auth/me \
+  -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
+```
+
+### Additional Documentation
+See `backend-nestjs/AUTH_README.md` for comprehensive authentication documentation including troubleshooting, deployment, and advanced usage.

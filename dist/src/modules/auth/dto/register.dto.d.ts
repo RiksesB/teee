@@ -1,0 +1,8 @@
+export declare class RegisterDto {
+    email: string;
+    password: string;
+    name: string;
+    companyName?: string;
+    phone?: string;
+    employees?: number;
+}
