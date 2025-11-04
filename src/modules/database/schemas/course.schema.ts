@@ -9,21 +9,18 @@ export class CourseModule {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
-  content: string;
+  @Prop()
+  content?: string;
 
   @Prop()
   videoUrl?: string;
 
   @Prop({ type: [Object], default: [] })
   questions: {
-    text: string;
+    question: string;
     options: string[];
-    correctAnswer: number;
-    feedback?: {
-      correct?: string;
-      incorrect?: string;
-    };
+    correctAnswer: string; // Letra (A, B, C, D)
+    feedback?: Record<string, string>; // { A: string, B: string, C: string }
   }[];
 
   @Prop({ type: Number, default: 0 })

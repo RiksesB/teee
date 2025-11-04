@@ -25,7 +25,7 @@ __decorate([
     __metadata("design:type", String)
 ], CourseModule.prototype, "title", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ required: true }),
+    (0, mongoose_1.Prop)(),
     __metadata("design:type", String)
 ], CourseModule.prototype, "content", void 0);
 __decorate([

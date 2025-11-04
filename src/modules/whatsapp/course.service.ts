@@ -55,15 +55,15 @@ export class CourseService {
         throw new Error(`Módulo ${moduloIndex} no encontrado en el curso ${sesion.courseData.title}`);
       }
 
-      // Adaptar formato de MongoDB al formato esperado
+      // El formato de MongoDB ya es compatible con el formato esperado
       return {
         titulo: modulo.title,
         preguntas: modulo.questions.map((q: any, index: number) => ({
           numero: index + 1,
           pregunta: q.question,
           opciones: q.options,
-          respuesta_correcta: q.correctAnswer,
-          retroalimentacion: q.feedback,
+          respuesta_correcta: q.correctAnswer, // Ya viene como letra (A, B, C)
+          retroalimentacion: q.feedback, // Ya viene como { A: string, B: string, C: string }
         })),
         videoUrl: modulo.videoUrl,
       };

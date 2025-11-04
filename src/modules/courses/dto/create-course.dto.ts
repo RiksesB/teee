@@ -17,24 +17,21 @@ export class QuestionDto {
   @ApiProperty({ description: 'Texto de la pregunta' })
   @IsString()
   @IsNotEmpty()
-  text: string;
+  question: string;
 
   @ApiProperty({ description: 'Opciones de respuesta', type: [String] })
   @IsArray()
   @IsString({ each: true })
   options: string[];
 
-  @ApiProperty({ description: 'Índice de la respuesta correcta' })
-  @IsNumber()
-  @Min(0)
-  correctAnswer: number;
+  @ApiProperty({ description: 'Letra de la respuesta correcta (A, B, C, D)' })
+  @IsString()
+  @IsNotEmpty()
+  correctAnswer: string;
 
-  @ApiPropertyOptional({ description: 'Retroalimentación para respuestas' })
+  @ApiProperty({ description: 'Retroalimentación para cada opción (A, B, C, D)' })
   @IsOptional()
-  feedback?: {
-    correct?: string;
-    incorrect?: string;
-  };
+  feedback?: Record<string, string>;
 }
 
 export class ModuleDto {
@@ -43,10 +40,10 @@ export class ModuleDto {
   @IsNotEmpty()
   title: string;
 
-  @ApiProperty({ description: 'Contenido del módulo' })
+  @ApiPropertyOptional({ description: 'Contenido del módulo (texto descriptivo)' })
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  content: string;
+  content?: string;
 
   @ApiPropertyOptional({ description: 'URL del video tutorial' })
   @IsOptional()

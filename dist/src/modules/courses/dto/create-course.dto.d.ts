@@ -1,15 +1,12 @@
 export declare class QuestionDto {
-    text: string;
+    question: string;
     options: string[];
-    correctAnswer: number;
-    feedback?: {
-        correct?: string;
-        incorrect?: string;
-    };
+    correctAnswer: string;
+    feedback?: Record<string, string>;
 }
 export declare class ModuleDto {
     title: string;
-    content: string;
+    content?: string;
     videoUrl?: string;
     questions?: QuestionDto[];
     order?: number;

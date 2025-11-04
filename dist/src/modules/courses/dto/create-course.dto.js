@@ -14,7 +14,7 @@ const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
 class QuestionDto {
-    text;
+    question;
     options;
     correctAnswer;
     feedback;
@@ -25,7 +25,7 @@ __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], QuestionDto.prototype, "text", void 0);
+], QuestionDto.prototype, "question", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ description: 'Opciones de respuesta', type: [String] }),
     (0, class_validator_1.IsArray)(),
@@ -33,13 +33,13 @@ __decorate([
     __metadata("design:type", Array)
 ], QuestionDto.prototype, "options", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Índice de la respuesta correcta' }),
-    (0, class_validator_1.IsNumber)(),
-    (0, class_validator_1.Min)(0),
-    __metadata("design:type", Number)
+    (0, swagger_1.ApiProperty)({ description: 'Letra de la respuesta correcta (A, B, C, D)' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
 ], QuestionDto.prototype, "correctAnswer", void 0);
 __decorate([
-    (0, swagger_1.ApiPropertyOptional)({ description: 'Retroalimentación para respuestas' }),
+    (0, swagger_1.ApiProperty)({ description: 'Retroalimentación para cada opción (A, B, C, D)' }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Object)
 ], QuestionDto.prototype, "feedback", void 0);
@@ -58,9 +58,9 @@ __decorate([
     __metadata("design:type", String)
 ], ModuleDto.prototype, "title", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ description: 'Contenido del módulo' }),
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Contenido del módulo (texto descriptivo)' }),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], ModuleDto.prototype, "content", void 0);
 __decorate([

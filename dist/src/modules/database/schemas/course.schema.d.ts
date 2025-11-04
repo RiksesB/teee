@@ -1,16 +1,13 @@
 import { Document, Types } from 'mongoose';
 export declare class CourseModule {
     title: string;
-    content: string;
+    content?: string;
     videoUrl?: string;
     questions: {
-        text: string;
+        question: string;
         options: string[];
-        correctAnswer: number;
-        feedback?: {
-            correct?: string;
-            incorrect?: string;
-        };
+        correctAnswer: string;
+        feedback?: Record<string, string>;
     }[];
     order: number;
 }
