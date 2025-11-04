@@ -1,8 +1,12 @@
 import axios from 'axios';
+import config from '../config';
+
+// Log de la URL del API para debugging
+console.log('🌐 API URL configurada:', config.apiUrl);
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: config.apiUrl,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -36,11 +40,16 @@ api.interceptors.response.use(
   (error) => {
     if (error.response) {
       // El servidor respondió con un código de error
+      const isLoginRequest = error.config.url?.includes('/auth/login');
+
       switch (error.response.status) {
         case 401:
-          // Token inválido o expirado
-          localStorage.removeItem('niblion_user');
-          window.location.href = '/login';
+          // NO redirigir si es un intento de login (para mostrar el error)
+          if (!isLoginRequest) {
+            // Token inválido o expirado en otras peticiones
+            localStorage.removeItem('niblion_user');
+            window.location.href = '/login';
+          }
           break;
         case 403:
           // Sin permisos
@@ -55,7 +64,7 @@ api.interceptors.response.use(
           console.error('Error del servidor');
           break;
         default:
-          console.error('Error:', error.response.data.message);
+          console.error('Error:', error.response?.data?.message || error.message);
       }
     } else if (error.request) {
       // La petición se hizo pero no hubo respuesta
@@ -64,7 +73,7 @@ api.interceptors.response.use(
       // Error al configurar la petición
       console.error('Error:', error.message);
     }
-    
+
     return Promise.reject(error);
   }
 );

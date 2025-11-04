@@ -68,7 +68,29 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      const errorMessage = error.response?.data?.message || error.message || 'Error al iniciar sesión';
+
+      // Mensajes de error específicos según el código de estado
+      let errorMessage = 'Error al iniciar sesión';
+
+      if (error.response) {
+        const status = error.response.status;
+        const backendMessage = error.response.data?.message;
+
+        if (status === 401) {
+          errorMessage = backendMessage || 'Credenciales incorrectas. Por favor verifica tu email y contraseña.';
+        } else if (status === 404) {
+          errorMessage = 'Usuario no encontrado. Por favor regístrate primero.';
+        } else if (status === 400) {
+          errorMessage = backendMessage || 'Datos inválidos. Verifica tu email y contraseña.';
+        } else {
+          errorMessage = backendMessage || `Error del servidor (${status})`;
+        }
+      } else if (error.request) {
+        errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+      } else {
+        errorMessage = error.message || 'Error desconocido al iniciar sesión';
+      }
+
       return { success: false, error: errorMessage };
     }
   };
