@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
 
 export const AdminDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
+    totalClients: 0,
+    totalCourses: 0,
+    loading: true,
+  });
 
-  const stats = [
-    { name: 'Total Clientes', value: '24', icon: '👥', change: '+12%', trend: 'up' },
-    { name: 'Licencias Activas', value: '1,248', icon: '🎫', change: '+18%', trend: 'up' },
-    { name: 'Cursos Disponibles', value: '12', icon: '📚', change: '+2', trend: 'up' },
-    { name: 'Campañas Activas', value: '8', icon: '📊', change: '-5%', trend: 'down' },
-  ];
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [usersRes, coursesRes] = await Promise.all([
+          api.get('/users/stats'),
+          api.get('/courses/stats'),
+        ]);
+
+        setStats({
+          totalClients: usersRes.data?.stats?.total || 0,
+          totalCourses: coursesRes.data?.stats?.total || 0,
+          loading: false,
+        });
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        setStats(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -30,24 +51,46 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-        {stats.map((stat) => (
-          <div key={stat.name} className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-150 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs sm:text-sm font-medium text-gray-600">{stat.name}</p>
-                <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">{stat.value}</p>
-              </div>
-              <div className="text-2xl sm:text-3xl lg:text-4xl">{stat.icon}</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6 max-w-4xl">
+        {/* Clientes */}
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-150 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Clientes</p>
+              {stats.loading ? (
+                <div className="animate-pulse bg-gray-200 h-8 w-16 rounded mt-2"></div>
+              ) : (
+                <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+                  {stats.totalClients}
+                </p>
+              )}
             </div>
-            <div className="mt-2 sm:mt-4 flex items-center">
-              <span className={`text-xs sm:text-sm font-medium ${stat.trend === 'up' ? 'text-secondary-600' : 'text-danger-600'}`}>
-                {stat.change}
-              </span>
-              <span className="text-xs sm:text-sm text-gray-500 ml-2">vs mes anterior</span>
-            </div>
+            <div className="text-2xl sm:text-3xl lg:text-4xl">👥</div>
           </div>
-        ))}
+          <div className="mt-2 sm:mt-4">
+            <span className="text-xs sm:text-sm text-gray-500">Usuarios registrados</span>
+          </div>
+        </div>
+
+        {/* Cursos */}
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-150 hover:shadow-md transition-shadow">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs sm:text-sm font-medium text-gray-600">Cursos</p>
+              {stats.loading ? (
+                <div className="animate-pulse bg-gray-200 h-8 w-16 rounded mt-2"></div>
+              ) : (
+                <p className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+                  {stats.totalCourses}
+                </p>
+              )}
+            </div>
+            <div className="text-2xl sm:text-3xl lg:text-4xl">📚</div>
+          </div>
+          <div className="mt-2 sm:mt-4">
+            <span className="text-xs sm:text-sm text-gray-500">Cursos creados</span>
+          </div>
+        </div>
       </div>
 
       {/* Tabs Navigation */}
