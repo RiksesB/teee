@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from '../../utils/i18n';
 import {
   getCourses,
   createCourse,
@@ -9,7 +8,6 @@ import {
 } from '../../services/coursesService';
 
 export const CoursesPage = () => {
-  const { t } = useTranslation();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

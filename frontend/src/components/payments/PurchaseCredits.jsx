@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from '../../utils/i18n.jsx';
 import {
   PAYMENT_METHODS,
   CURRENCIES,
@@ -11,7 +10,6 @@ import {
 } from '../../services/paymentService';
 
 export const PurchaseCredits = ({ onSuccess }) => {
-  const { t } = useTranslation();
   const [step, setStep] = useState(1); // 1: Configurar, 2: Pagar
   const [numberOfPeople, setNumberOfPeople] = useState(10);
   const [currency, setCurrency] = useState(CURRENCIES.USD);
@@ -54,7 +52,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
       // Redirigir a PayPal
       window.location.href = result.data.approvalUrl;
     } catch (error) {
-      alert(t('payments.paymentError'));
+      alert('Error al procesar el pago');
       setLoading(false);
     }
   };
@@ -66,10 +64,10 @@ export const PurchaseCredits = ({ onSuccess }) => {
         numberOfPeople,
         ...mobilePaymentData,
       });
-      alert(t('payments.paymentPending'));
+      alert('Pago registrado. Pendiente de confirmación.');
       onSuccess?.();
     } catch (error) {
-      alert(t('payments.paymentError'));
+      alert('Error al procesar el pago');
     } finally {
       setLoading(false);
     }
@@ -83,10 +81,10 @@ export const PurchaseCredits = ({ onSuccess }) => {
         currency,
         ...bankTransferData,
       });
-      alert(t('payments.paymentPending'));
+      alert('Pago registrado. Pendiente de confirmación.');
       onSuccess?.();
     } catch (error) {
-      alert(t('payments.paymentError'));
+      alert('Error al procesar el pago');
     } finally {
       setLoading(false);
     }
@@ -119,14 +117,14 @@ export const PurchaseCredits = ({ onSuccess }) => {
   if (step === 1) {
     return (
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-2xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('payments.title')}</h2>
-        <p className="text-gray-600 mb-6">{t('payments.subtitle')}</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Adquirir Créditos</h2>
+        <p className="text-gray-600 mb-6">Selecciona la cantidad de personas y método de pago</p>
 
         <div className="space-y-6">
           {/* Número de personas */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('payments.numberOfPeople')}
+              Número de Personas
             </label>
             <input
               type="number"
@@ -137,14 +135,14 @@ export const PurchaseCredits = ({ onSuccess }) => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">
-              {t('client.pricePerPerson')}: {currency === CURRENCIES.USD ? '$' : 'Bs. '}{priceInfo.pricePerPerson}
+              Precio por persona: {currency === CURRENCIES.USD ? '$' : 'Bs. '}{priceInfo.pricePerPerson}
             </p>
           </div>
 
           {/* Moneda */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('payments.currency')}
+              Moneda
             </label>
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -175,7 +173,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           {/* Total */}
           <div className="bg-gray-75 rounded-lg p-4 border border-gray-150">
             <div className="flex justify-between items-center">
-              <span className="text-gray-700 font-medium">{t('payments.total')}:</span>
+              <span className="text-gray-700 font-medium">Total:</span>
               <span className="text-3xl font-bold text-primary-600">
                 {currency === CURRENCIES.USD ? '$' : 'Bs. '}{priceInfo.subtotal.toFixed(2)}
               </span>
@@ -190,7 +188,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
             disabled={numberOfPeople < 1}
             className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {t('common.next')} →
+            Siguiente →
           </button>
         </div>
       </div>
@@ -203,10 +201,10 @@ export const PurchaseCredits = ({ onSuccess }) => {
         onClick={() => setStep(1)}
         className="text-gray-600 hover:text-gray-900 mb-4 flex items-center gap-2"
       >
-        ← {t('common.back')}
+        ← Volver
       </button>
 
-      <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('payments.paymentMethod')}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Método de Pago</h2>
       <p className="text-gray-600 mb-6">
         Total: {currency === CURRENCIES.USD ? '$' : 'Bs. '}{priceInfo.subtotal.toFixed(2)}
       </p>
@@ -225,8 +223,8 @@ export const PurchaseCredits = ({ onSuccess }) => {
           <div className="flex items-center gap-3">
             <div className="text-3xl">💳</div>
             <div>
-              <div className="font-semibold text-gray-900">{t('payments.paypal')}</div>
-              <div className="text-sm text-gray-500">{t('payments.paypalInstructions')}</div>
+              <div className="font-semibold text-gray-900">PayPal</div>
+              <div className="text-sm text-gray-500">Pago instantáneo con tarjeta o cuenta PayPal</div>
             </div>
           </div>
         </button>
@@ -244,8 +242,8 @@ export const PurchaseCredits = ({ onSuccess }) => {
             <div className="flex items-center gap-3">
               <div className="text-3xl">📱</div>
               <div>
-                <div className="font-semibold text-gray-900">{t('payments.mobilePayment')}</div>
-                <div className="text-sm text-gray-500">{t('payments.mobileInstructions')}</div>
+                <div className="font-semibold text-gray-900">Pago Móvil</div>
+                <div className="text-sm text-gray-500">Transferencia desde tu banco móvil</div>
               </div>
             </div>
           </button>
@@ -263,8 +261,8 @@ export const PurchaseCredits = ({ onSuccess }) => {
           <div className="flex items-center gap-3">
             <div className="text-3xl">🏦</div>
             <div>
-              <div className="font-semibold text-gray-900">{t('payments.bankTransfer')}</div>
-              <div className="text-sm text-gray-500">{t('payments.transferInstructions')}</div>
+              <div className="font-semibold text-gray-900">Transferencia Bancaria</div>
+              <div className="text-sm text-gray-500">Transferencia directa a cuenta bancaria</div>
             </div>
           </div>
         </button>
@@ -276,7 +274,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           <h3 className="font-semibold text-gray-900 mb-4">Datos del Pago Móvil</h3>
           <input
             type="tel"
-            placeholder={t('payments.mobilePhone')}
+            placeholder="Teléfono (04XX-XXXXXXX)"
             value={mobilePaymentData.phone}
             onChange={(e) => setMobilePaymentData({ ...mobilePaymentData, phone: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -295,7 +293,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           </select>
           <input
             type="text"
-            placeholder={t('payments.mobileReference')}
+            placeholder="Número de referencia"
             value={mobilePaymentData.referenceNumber}
             onChange={(e) => setMobilePaymentData({ ...mobilePaymentData, referenceNumber: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -316,7 +314,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           {/* Info bancaria de Niblion */}
           {bankingInfo && (
             <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-4">
-              <h4 className="font-semibold text-primary-900 mb-2">{t('payments.bankingInfo')}</h4>
+              <h4 className="font-semibold text-primary-900 mb-2">Datos Bancarios</h4>
               <div className="text-sm text-primary-800 space-y-1">
                 <p><strong>Banco:</strong> {bankingInfo.bankName}</p>
                 <p><strong>Titular:</strong> {bankingInfo.accountHolder}</p>
@@ -328,21 +326,21 @@ export const PurchaseCredits = ({ onSuccess }) => {
           
           <input
             type="text"
-            placeholder={t('payments.bankName')}
+            placeholder="Nombre del banco"
             value={bankTransferData.bankName}
             onChange={(e) => setBankTransferData({ ...bankTransferData, bankName: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="text"
-            placeholder={t('payments.accountHolder')}
+            placeholder="Titular de la cuenta"
             value={bankTransferData.accountHolder}
             onChange={(e) => setBankTransferData({ ...bankTransferData, accountHolder: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
           />
           <input
             type="text"
-            placeholder={t('payments.bankReference')}
+            placeholder="Número de referencia"
             value={bankTransferData.referenceNumber}
             onChange={(e) => setBankTransferData({ ...bankTransferData, referenceNumber: e.target.value })}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
@@ -356,7 +354,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('payments.uploadReceipt')}
+              Cargar Comprobante
             </label>
             <input
               type="file"
@@ -379,10 +377,10 @@ export const PurchaseCredits = ({ onSuccess }) => {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            {t('payments.processing')}
+            Procesando...
           </>
         ) : (
-          t('payments.proceedToPayment')
+          'Proceder al Pago'
         )}
       </button>
     </div>

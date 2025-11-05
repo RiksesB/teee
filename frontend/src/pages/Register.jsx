@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useTranslation } from '../utils/i18n.jsx';
-import { LanguageSelector } from '../components/ui/LanguageSelector';
 import { NiblionLogo } from '../components/ui/Logo';
 
 export const Register = () => {
@@ -22,7 +20,6 @@ export const Register = () => {
   const [success, setSuccess] = useState(false);
   
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const { register } = useAuth();
 
@@ -111,7 +108,7 @@ export const Register = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-6 sm:mb-8">
+        <div className="flex justify-start items-center mb-6 sm:mb-8">
           <Link 
             to="/" 
             className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors"
@@ -121,7 +118,6 @@ export const Register = () => {
             </svg>
             Volver al inicio
           </Link>
-          <LanguageSelector />
         </div>
 
         {/* Logo y Header */}

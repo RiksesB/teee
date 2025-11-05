@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { useTranslation } from '../utils/i18n.jsx';
-import { LanguageSelector } from '../components/ui/LanguageSelector';
 import { NiblionLogo } from '../components/ui/Logo';
 
 export const Login = () => {
@@ -14,7 +12,6 @@ export const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,8 +35,8 @@ export const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
       <div className="max-w-md w-full space-y-6 sm:space-y-8">
-        {/* Botón volver y selector de idioma */}
-        <div className="flex justify-between items-center">
+        {/* Botón volver */}
+        <div className="flex justify-start items-center">
           <Link 
             to="/" 
             className="text-primary-600 hover:text-primary-700 font-medium flex items-center gap-2 transition-colors text-sm sm:text-base"
@@ -47,9 +44,8 @@ export const Login = () => {
             <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            {t('common.back') || 'Volver'}
+            Volver
           </Link>
-          <LanguageSelector />
         </div>
 
         {/* Logo y Header */}
@@ -61,7 +57,7 @@ export const Login = () => {
             Niblion
           </h2>
           <p className="text-xs sm:text-sm text-gray-600">
-            {t('auth.loginSubtitle')}
+            Plataforma de Concienciación en Ciberseguridad
           </p>
         </div>
 
@@ -81,7 +77,7 @@ export const Login = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('auth.emailPlaceholder')}
+                Correo Electrónico
               </label>
               <input
                 id="email"
@@ -92,13 +88,13 @@ export const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none relative block w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
-                placeholder={t('auth.emailPlaceholder')}
+                placeholder="tu@empresa.com"
               />
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('auth.passwordPlaceholder')}
+                Contraseña
               </label>
               <input
                 id="password"
@@ -109,7 +105,7 @@ export const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="appearance-none relative block w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
-                placeholder={t('auth.passwordPlaceholder')}
+                placeholder="Contraseña"
               />
             </div>
 
@@ -122,13 +118,13 @@ export const Login = () => {
                   className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  {t('auth.rememberMe')}
+                  Recordarme
                 </label>
               </div>
 
               <div className="text-sm">
                 <a href="#" className="font-medium text-primary-600 hover:text-primary-500 transition-colors">
-                  {t('auth.forgotPassword')}
+                  ¿Olvidaste tu contraseña?
                 </a>
               </div>
             </div>
@@ -144,10 +140,10 @@ export const Login = () => {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  {t('auth.loggingIn')}
+                  Iniciando sesión...
                 </span>
               ) : (
-                t('auth.loginButton')
+                'Iniciar sesión'
               )}
             </button>
 
@@ -183,7 +179,7 @@ export const Login = () => {
 
         {/* Footer */}
         <p className="text-center text-xs text-gray-500">
-          © 2025 Niblion. {t('auth.loginSubtitle')}.
+          © 2025 Niblion. Plataforma de Concienciación en Ciberseguridad.
         </p>
       </div>
     </div>
