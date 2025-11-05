@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ticket } from 'lucide-react';
 
 export const LicensesPage = () => {
   return (
@@ -19,7 +20,9 @@ export const LicensesPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">🎫</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Ticket className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Control de Licencias y Créditos</h3>
         <p className="text-gray-600 mb-4">
           Gestiona los créditos de capacitación por cliente y supervisa las transacciones.

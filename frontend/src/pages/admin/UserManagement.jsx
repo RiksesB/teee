@@ -6,6 +6,7 @@ import {
   XCircleIcon,
   ShieldCheckIcon
 } from '@heroicons/react/24/outline';
+import { Sparkles, Lock } from 'lucide-react';
 
 export const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -194,12 +195,22 @@ export const UserManagement = () => {
                   </span>
                 </div>
                 <div className="col-span-2">
-                  <span className={`inline-flex items-center px-2 py-1 rounded-full font-medium ${
+                  <span className={`inline-flex items-center px-2 py-1 rounded-full font-medium gap-1 ${
                     user.isRegistered
                       ? 'bg-green-100 text-green-800'
                       : 'bg-gray-100 text-gray-800'
                   }`}>
-                    {user.isRegistered ? '✨ Registrado' : '🔒 Sistema'}
+                    {user.isRegistered ? (
+                      <>
+                        <Sparkles className="w-3 h-3" />
+                        Registrado
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="w-3 h-3" />
+                        Sistema
+                      </>
+                    )}
                   </span>
                 </div>
                 <div className="col-span-2 text-gray-500 mt-1">
@@ -288,12 +299,22 @@ export const UserManagement = () => {
                     })}
                   </td>
                   <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium gap-1 ${
                       user.isRegistered
                         ? 'bg-green-100 text-green-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {user.isRegistered ? '✨ Registrado' : '🔒 Sistema'}
+                      {user.isRegistered ? (
+                        <>
+                          <Sparkles className="w-3 h-3" />
+                          Registrado
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-3 h-3" />
+                          Sistema
+                        </>
+                      )}
                     </span>
                   </td>
                   <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

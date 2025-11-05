@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { NiblionLogo } from '../components/ui/Logo';
+import { CheckCircle } from 'lucide-react';
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -82,7 +83,9 @@ export const Register = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full text-center">
           <div className="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100">
-            <div className="text-6xl mb-4">✅</div>
+            <div className="text-green-600 flex justify-center mb-4">
+              <CheckCircle className="w-16 h-16" />
+            </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">¡Registro Exitoso!</h2>
             <p className="text-gray-600 mb-6">
               Tu cuenta ha sido creada correctamente. Ya puedes iniciar sesión y comenzar a usar Niblion.
@@ -129,7 +132,7 @@ export const Register = () => {
             Únete a Niblion
           </h2>
           <p className="text-sm sm:text-base text-gray-600">
-            Protege a tu organización contra ataques de phishing
+            Protege a tu organización con capacitación en ciberseguridad
           </p>
         </div>
 

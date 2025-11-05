@@ -8,6 +8,7 @@ import {
   registerBankTransfer,
   getBankingInfo,
 } from '../../services/paymentService';
+import { CreditCard, Smartphone, Building2, DollarSign, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export const PurchaseCredits = ({ onSuccess }) => {
   const [step, setStep] = useState(1); // 1: Configurar, 2: Pagar
@@ -153,7 +154,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <div className="text-2xl mb-1">💵</div>
+                <div className="flex items-center justify-center mb-1">
+                  <DollarSign className="w-8 h-8" />
+                </div>
                 <div className="font-semibold">USD - Dólares</div>
               </button>
               <button
@@ -164,7 +167,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <div className="text-2xl mb-1">🇻🇪</div>
+                <div className="flex items-center justify-center mb-1">
+                  <DollarSign className="w-8 h-8" />
+                </div>
                 <div className="font-semibold">VES - Bolívares</div>
               </button>
             </div>
@@ -186,9 +191,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
           <button
             onClick={() => setStep(2)}
             disabled={numberOfPeople < 1}
-            className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Siguiente →
+            Siguiente <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -201,7 +206,7 @@ export const PurchaseCredits = ({ onSuccess }) => {
         onClick={() => setStep(1)}
         className="text-gray-600 hover:text-gray-900 mb-4 flex items-center gap-2"
       >
-        ← Volver
+        <ArrowLeft className="w-4 h-4" /> Volver
       </button>
 
       <h2 className="text-2xl font-bold text-gray-900 mb-2">Método de Pago</h2>
@@ -221,7 +226,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="text-3xl">💳</div>
+            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <CreditCard className="w-5 h-5 text-blue-600" />
+            </div>
             <div>
               <div className="font-semibold text-gray-900">PayPal</div>
               <div className="text-sm text-gray-500">Pago instantáneo con tarjeta o cuenta PayPal</div>
@@ -240,7 +247,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="text-3xl">📱</div>
+              <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                <Smartphone className="w-5 h-5 text-purple-600" />
+              </div>
               <div>
                 <div className="font-semibold text-gray-900">Pago Móvil</div>
                 <div className="text-sm text-gray-500">Transferencia desde tu banco móvil</div>
@@ -259,7 +268,9 @@ export const PurchaseCredits = ({ onSuccess }) => {
           }`}
         >
           <div className="flex items-center gap-3">
-            <div className="text-3xl">🏦</div>
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-green-600" />
+            </div>
             <div>
               <div className="font-semibold text-gray-900">Transferencia Bancaria</div>
               <div className="text-sm text-gray-500">Transferencia directa a cuenta bancaria</div>

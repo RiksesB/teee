@@ -2,6 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { NiblionLogo } from '../components/ui/Logo';
 import emailjs from '@emailjs/browser';
+import { 
+  Users, 
+  Smartphone, 
+  DollarSign, 
+  Shield, 
+  BarChart3,
+  MessageCircle,
+  CheckCircle,
+  ArrowRight,
+  Mail,
+  Building2,
+  Phone,
+  Send
+} from 'lucide-react';
 import './LandingPage.css';
 
 export const LandingPage = () => {
@@ -194,7 +208,7 @@ export const LandingPage = () => {
                 <div className="bg-white rounded-xl p-6 space-y-4">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                      <span className="text-2xl">👨‍👩‍👧‍👦</span>
+                      <Users className="w-6 h-6 text-primary-600" />
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-semibold text-gray-900 mb-1">Para Todos</div>
@@ -203,7 +217,7 @@ export const LandingPage = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-secondary-100 rounded-full flex items-center justify-center">
-                      <span className="text-2xl">📱</span>
+                      <MessageCircle className="w-6 h-6 text-secondary-600" />
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-semibold text-gray-900 mb-1">Usa WhatsApp</div>
@@ -212,7 +226,7 @@ export const LandingPage = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-2xl">💰</span>
+                      <DollarSign className="w-6 h-6 text-purple-600" />
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-semibold text-gray-900 mb-1">Precio Justo</div>
@@ -238,11 +252,11 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Feature 1 */}
             <div className="feature-card bg-gradient-to-br from-primary-50 to-white p-8 rounded-2xl border border-primary-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-primary-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">📱</span>
+                <MessageCircle className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Cursos por WhatsApp
@@ -255,7 +269,7 @@ export const LandingPage = () => {
             {/* Feature 2 */}
             <div className="feature-card bg-gradient-to-br from-secondary-50 to-white p-8 rounded-2xl border border-secondary-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-secondary-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">👥</span>
+                <Users className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Para Todos los Públicos
@@ -266,22 +280,9 @@ export const LandingPage = () => {
             </div>
 
             {/* Feature 3 */}
-            <div className="feature-card bg-gradient-to-br from-purple-50 to-white p-8 rounded-2xl border border-purple-100 hover:shadow-xl transition-shadow">
-              <div className="w-14 h-14 bg-purple-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">🎣</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                Simulaciones Reales
-              </h3>
-              <p className="text-gray-600">
-                Practica identificando amenazas reales en un entorno seguro. Aprende haciendo, no solo leyendo.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
             <div className="feature-card bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl border border-orange-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-orange-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">💰</span>
+                <DollarSign className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Precio Justo
@@ -291,10 +292,10 @@ export const LandingPage = () => {
               </p>
             </div>
 
-            {/* Feature 5 */}
+            {/* Feature 4 */}
             <div className="feature-card bg-gradient-to-br from-pink-50 to-white p-8 rounded-2xl border border-pink-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-pink-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">📊</span>
+                <BarChart3 className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Reportes Claros
@@ -307,7 +308,7 @@ export const LandingPage = () => {
             {/* Feature 6 */}
             <div className="feature-card bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
-                <span className="text-3xl">🔐</span>
+                <Shield className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Tu Privacidad Primero
@@ -446,20 +447,20 @@ export const LandingPage = () => {
 
                       <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 sm:p-4 lg:p-6 mx-auto w-full max-w-sm lg:max-w-md">
                         <h4 className="font-bold text-gray-900 mb-2 sm:mb-3 lg:mb-4 flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg">
-                          <span className="text-xl sm:text-2xl">✅</span>
+                          <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                           Incluye
                         </h4>
                         <ul className="space-y-1.5 sm:space-y-2 lg:space-y-3">
                           <li className="flex items-start gap-2">
-                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
+                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                             <span className="text-gray-700 text-xs sm:text-sm lg:text-base">1 curso completo vía WhatsApp</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
-                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">1 simulación de phishing práctica</span>
+                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">Contenido interactivo y práctico</span>
                           </li>
                           <li className="flex items-start gap-2">
-                            <span className="text-green-600 mt-0.5 font-bold text-sm">✓</span>
+                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
                             <span className="text-gray-700 text-xs sm:text-sm lg:text-base">Reportes de progreso (si es para equipos)</span>
                           </li>
                         </ul>
@@ -468,7 +469,7 @@ export const LandingPage = () => {
 
                     <div className="flex justify-center mt-2 sm:mt-3 lg:mt-4">
                       <p className="text-blue-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
-                        <span>👆</span>
+                        <ArrowRight className="w-4 h-4" />
                         Haz clic para ver métodos de pago
                       </p>
                     </div>
@@ -491,7 +492,7 @@ export const LandingPage = () => {
 
                     <div className="flex-1 flex flex-col justify-center">
                       <h3 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 flex items-center justify-center gap-3">
-                        <span className="text-2xl sm:text-3xl">💳</span>
+                        <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
                         <span className="text-center">Métodos de Pago</span>
                       </h3>
 
@@ -499,7 +500,7 @@ export const LandingPage = () => {
                         <ul className="space-y-3 sm:space-y-4">
                           <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-lg sm:text-xl">💳</span>
+                              <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-gray-900 font-semibold text-sm sm:text-base">PayPal</span>
@@ -508,7 +509,7 @@ export const LandingPage = () => {
                           </li>
                           <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-lg sm:text-xl">📱</span>
+                              <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-gray-900 font-semibold text-sm sm:text-base">Pago Móvil (Venezuela)</span>
@@ -517,7 +518,7 @@ export const LandingPage = () => {
                           </li>
                           <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
                             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-lg sm:text-xl">🏦</span>
+                              <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <span className="text-gray-900 font-semibold text-sm sm:text-base">Transferencia Bancaria</span>
@@ -539,7 +540,7 @@ export const LandingPage = () => {
 
                     <div className="flex justify-center">
                       <p className="text-green-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
-                        <span>👆</span>
+                        <ArrowRight className="w-4 h-4 rotate-180" />
                         Haz clic para volver
                       </p>
                     </div>

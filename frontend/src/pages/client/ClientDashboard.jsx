@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { Megaphone, BookOpen, Ticket, BarChart3, Package, TrendingUp } from 'lucide-react';
 
 export const ClientDashboard = () => {
   const { user } = useAuth();
@@ -51,7 +52,9 @@ export const ClientDashboard = () => {
                 <p className="text-4xl font-bold mt-2">{userStats.activeCampaigns}</p>
                 <p className="text-primary-100 text-sm mt-2">En progreso</p>
               </div>
-              <div className="text-6xl opacity-20">📢</div>
+              <div className="opacity-20">
+                <Megaphone className="w-16 h-16" />
+              </div>
             </div>
           </div>
 
@@ -62,7 +65,9 @@ export const ClientDashboard = () => {
                 <p className="text-4xl font-bold mt-2">{userStats.completedCourses}</p>
                 <p className="text-secondary-100 text-sm mt-2">Total en la empresa</p>
               </div>
-              <div className="text-6xl opacity-20">📚</div>
+              <div className="opacity-20">
+                <BookOpen className="w-16 h-16" />
+              </div>
             </div>
           </div>
 
@@ -73,7 +78,9 @@ export const ClientDashboard = () => {
                 <p className="text-4xl font-bold mt-2">87%</p>
                 <p className="text-purple-100 text-sm mt-2">Promedio general</p>
               </div>
-              <div className="text-6xl opacity-20">📈</div>
+              <div className="opacity-20">
+                <TrendingUp className="w-16 h-16" />
+              </div>
             </div>
           </div>
         </div>
@@ -83,10 +90,10 @@ export const ClientDashboard = () => {
           <div className="border-b border-gray-150">
             <nav className="-mb-px flex space-x-4 sm:space-x-8 px-2 sm:px-6 overflow-x-auto" aria-label="Tabs">
               {[
-                { id: 'catalog', name: 'Catálogo de Cursos', icon: '📚' },
-                { id: 'licenses', name: 'Mis Licencias', icon: '🎫' },
-                { id: 'campaigns', name: 'Mis Campañas', icon: '📢' },
-                { id: 'tracking', name: 'Seguimiento', icon: '📊' },
+                { id: 'catalog', name: 'Catálogo de Cursos', icon: BookOpen },
+                { id: 'licenses', name: 'Mis Licencias', icon: Ticket },
+                { id: 'campaigns', name: 'Mis Campañas', icon: Megaphone },
+                { id: 'tracking', name: 'Seguimiento', icon: BarChart3 },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -97,7 +104,7 @@ export const ClientDashboard = () => {
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   } whitespace-nowrap py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors`}
                 >
-                  <span className="text-sm sm:text-base">{tab.icon}</span>
+                  <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span className="hidden sm:inline">{tab.name}</span>
                 </button>
               ))}
@@ -120,7 +127,7 @@ export const ClientDashboard = () => {
 // Componentes de pestañas
 const CatalogTab = () => {
   const courses = [
-    { id: 1, title: 'Fundamentos de Phishing', modules: 5, duration: '2h', level: 'Básico', enrolled: 0 },
+    { id: 1, title: 'Fundamentos de Seguridad Digital', modules: 5, duration: '2h', level: 'Básico', enrolled: 0 },
     { id: 2, title: 'Detección Avanzada de Amenazas', modules: 8, duration: '3h', level: 'Intermedio', enrolled: 0 },
     { id: 3, title: 'Ingeniería Social', modules: 6, duration: '2.5h', level: 'Avanzado', enrolled: 0 },
     { id: 4, title: 'Seguridad en Email Corporativo', modules: 4, duration: '1.5h', level: 'Básico', enrolled: 0 },
@@ -144,8 +151,8 @@ const CatalogTab = () => {
         {courses.map((course) => (
           <div key={course.id} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all hover:border-primary-200">
             <div className="flex items-start justify-between mb-4">
-              <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center text-3xl">
-                📚
+              <div className="w-14 h-14 bg-gradient-to-br from-primary-100 to-primary-200 rounded-xl flex items-center justify-center text-primary-600">
+                <BookOpen className="w-8 h-8" />
               </div>
               <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                 course.level === 'Básico' ? 'bg-secondary-100 text-secondary-700' :
@@ -200,7 +207,9 @@ const LicensesTab = ({ userStats }) => (
 
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="border border-gray-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
-        <div className="text-5xl mb-4">📦</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Package className="w-14 h-14" />
+        </div>
         <h4 className="font-semibold text-gray-900 mb-2">Paquete Básico</h4>
         <p className="text-3xl font-bold text-primary-600 mb-2">50</p>
         <p className="text-sm text-gray-500 mb-4">licencias</p>
@@ -214,7 +223,9 @@ const LicensesTab = ({ userStats }) => (
         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary-600 text-white px-4 py-1 rounded-full text-xs font-semibold">
           Recomendado
         </div>
-        <div className="text-5xl mb-4">📦</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Package className="w-14 h-14" />
+        </div>
         <h4 className="font-semibold text-gray-900 mb-2">Paquete Pro</h4>
         <p className="text-3xl font-bold text-primary-600 mb-2">100</p>
         <p className="text-sm text-gray-500 mb-4">licencias</p>
@@ -225,7 +236,9 @@ const LicensesTab = ({ userStats }) => (
       </div>
 
       <div className="border border-gray-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
-        <div className="text-5xl mb-4">📦</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Package className="w-14 h-14" />
+        </div>
         <h4 className="font-semibold text-gray-900 mb-2">Paquete Enterprise</h4>
         <p className="text-3xl font-bold text-primary-600 mb-2">250</p>
         <p className="text-sm text-gray-500 mb-4">licencias</p>
@@ -332,7 +345,7 @@ const TrackingTab = () => (
         <h4 className="font-semibold text-gray-900 mb-4">Últimas Actividades</h4>
         <div className="space-y-3">
           {[
-            { user: 'Juan Pérez', action: 'completó curso de Phishing', time: 'Hace 2 horas' },
+            { user: 'Juan Pérez', action: 'completó curso de Seguridad Digital', time: 'Hace 2 horas' },
             { user: 'María García', action: 'inició curso de Seguridad', time: 'Hace 5 horas' },
             { user: 'Carlos López', action: 'obtuvo certificado', time: 'Hace 1 día' },
           ].map((activity, i) => (

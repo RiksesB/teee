@@ -171,7 +171,7 @@ export const Login = () => {
             </div>
             <div className="pt-2 mt-2 border-t border-blue-200">
               <span className="text-blue-600">
-                ✨ ¿Nuevo? <Link to="/register" className="font-semibold underline">Regístrate aquí</Link> - Los datos se guardan localmente
+                ¿Nuevo? <Link to="/register" className="font-semibold underline">Regístrate aquí</Link> - Los datos se guardan localmente
               </span>
             </div>
           </div>

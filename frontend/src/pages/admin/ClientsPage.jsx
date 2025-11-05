@@ -1,4 +1,5 @@
 import React from 'react';
+import { Users } from 'lucide-react';
 
 export const ClientsPage = () => {
   return (
@@ -20,7 +21,9 @@ export const ClientsPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-4 sm:p-6 lg:p-8 text-center">
-        <div className="text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">👥</div>
+        <div className="text-primary-600 flex justify-center mb-3 sm:mb-4">
+          <Users className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16" />
+        </div>
         <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Administración de Clientes</h3>
         <p className="text-sm sm:text-base text-gray-600 mb-4">
           Gestiona las organizaciones que usan la plataforma para capacitar a sus empleados.

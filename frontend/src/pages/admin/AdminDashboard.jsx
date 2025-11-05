@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import { ClientsTab } from '../../components/admin/ClientsTab';
+import { Users, BookOpen, BarChart3 } from 'lucide-react';
 
 export const AdminDashboard = () => {
   const { user } = useAuth();
@@ -59,7 +60,9 @@ export const AdminDashboard = () => {
                 </p>
               )}
             </div>
-            <div className="text-2xl sm:text-3xl lg:text-4xl">👥</div>
+            <div className="text-primary-600">
+              <Users className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
+            </div>
           </div>
           <div className="mt-2 sm:mt-4">
             <span className="text-xs sm:text-sm text-gray-500">Usuarios registrados</span>
@@ -79,7 +82,9 @@ export const AdminDashboard = () => {
                 </p>
               )}
             </div>
-            <div className="text-2xl sm:text-3xl lg:text-4xl">📚</div>
+            <div className="text-primary-600">
+              <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12" />
+            </div>
           </div>
           <div className="mt-2 sm:mt-4">
             <span className="text-xs sm:text-sm text-gray-500">Cursos creados</span>
@@ -92,8 +97,8 @@ export const AdminDashboard = () => {
         <div className="border-b border-gray-150 px-2 sm:px-6">
           <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto" aria-label="Tabs">
             {[
-              { id: 'overview', name: 'Resumen', icon: '📊' },
-              { id: 'clients', name: 'Clientes', icon: '👥' },
+              { id: 'overview', name: 'Resumen', icon: BarChart3 },
+              { id: 'clients', name: 'Clientes', icon: Users },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -104,7 +109,7 @@ export const AdminDashboard = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 } whitespace-nowrap py-3 sm:py-4 px-1 border-b-2 font-medium text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors`}
               >
-                <span className="text-sm sm:text-base">{tab.icon}</span>
+                <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="hidden sm:inline">{tab.name}</span>
               </button>
             ))}
@@ -191,7 +196,7 @@ const OverviewTab = () => {
             <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center bg-primary-100 text-primary-600">
-                  👥
+                  <Users className="w-5 h-5" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">{activity.action}</p>

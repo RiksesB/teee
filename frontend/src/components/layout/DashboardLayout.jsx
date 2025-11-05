@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth, USER_ROLES } from '../../contexts/AuthContext';
 import { NiblionLogo } from '../ui/Logo';
+import { BarChart3, Users, BookOpen, Ticket, Megaphone, TrendingUp, Home } from 'lucide-react';
 
 export const DashboardLayout = ({ children }) => {
   const { user, logout } = useAuth();
@@ -12,20 +13,20 @@ export const DashboardLayout = ({ children }) => {
   const isAdmin = user?.role === USER_ROLES.ADMIN;
 
   const adminNavigation = [
-    { name: 'Resumen', href: '/admin', icon: '📊' },
-    { name: 'Clientes', href: '/admin/clients', icon: '👥' },
-    { name: 'Cursos', href: '/admin/courses', icon: '📚' },
-    { name: 'Licencias', href: '/admin/licenses', icon: '🎫' },
-    { name: 'Campañas', href: '/admin/campaigns', icon: '📢' },
-    { name: 'Reportes', href: '/admin/reports', icon: '📈' },
+    { name: 'Resumen', href: '/admin', icon: BarChart3 },
+    { name: 'Clientes', href: '/admin/clients', icon: Users },
+    { name: 'Cursos', href: '/admin/courses', icon: BookOpen },
+    { name: 'Licencias', href: '/admin/licenses', icon: Ticket },
+    { name: 'Campañas', href: '/admin/campaigns', icon: Megaphone },
+    { name: 'Reportes', href: '/admin/reports', icon: TrendingUp },
   ];
 
   const clientNavigation = [
-    { name: 'Mi Dashboard', href: '/client', icon: '🏠' },
-    { name: 'Catálogo', href: '/client/catalog', icon: '📚' },
-    { name: 'Mis Licencias', href: '/client/licenses', icon: '🎫' },
-    { name: 'Campañas', href: '/client/campaigns', icon: '📢' },
-    { name: 'Seguimiento', href: '/client/tracking', icon: '📊' },
+    { name: 'Mi Dashboard', href: '/client', icon: Home },
+    { name: 'Catálogo', href: '/client/catalog', icon: BookOpen },
+    { name: 'Mis Licencias', href: '/client/licenses', icon: Ticket },
+    { name: 'Campañas', href: '/client/campaigns', icon: Megaphone },
+    { name: 'Seguimiento', href: '/client/tracking', icon: BarChart3 },
   ];
 
   const navigation = isAdmin ? adminNavigation : clientNavigation;
@@ -51,6 +52,7 @@ export const DashboardLayout = ({ children }) => {
         <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
+            const Icon = item.icon;
             return (
               <Link
                 key={item.name}
@@ -61,7 +63,7 @@ export const DashboardLayout = ({ children }) => {
                     : 'text-gray-700 hover:bg-gray-75'
                 }`}
               >
-                <span className="text-xl">{item.icon}</span>
+                <Icon className="w-5 h-5" />
                 {item.name}
               </Link>
             );
@@ -179,6 +181,7 @@ export const DashboardLayout = ({ children }) => {
             <nav className="flex-1 px-4 py-6 space-y-3 overflow-y-auto">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
+                const Icon = item.icon;
                 return (
                   <Link
                     key={item.name}
@@ -190,7 +193,7 @@ export const DashboardLayout = ({ children }) => {
                         : 'text-white hover:bg-white hover:bg-opacity-15 hover:text-white'
                     }`}
                   >
-                    <span className="text-xl">{item.icon}</span>
+                    <Icon className="w-5 h-5" />
                     <span className="font-medium">{item.name}</span>
                   </Link>
                 );

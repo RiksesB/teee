@@ -1,4 +1,5 @@
 import React from 'react';
+import { BarChart3 } from 'lucide-react';
 
 export const TrackingPage = () => {
   return (
@@ -21,7 +22,9 @@ export const TrackingPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">📊</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <BarChart3 className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Analíticas de Capacitación</h3>
         <p className="text-gray-600 mb-4">
           Obtén insights detallados sobre el rendimiento de tu equipo en capacitación de ciberseguridad.
@@ -39,12 +42,12 @@ export const TrackingPage = () => {
               </ul>
             </div>
             <div>
-              <h5 className="font-semibold text-indigo-800 mb-1">Simulación de Phishing</h5>
+              <h5 className="font-semibold text-indigo-800 mb-1">Desempeño por Área</h5>
               <ul className="text-indigo-700 space-y-1">
-                <li>• Empleados que cayeron en phishing</li>
-                <li>• Empleados que reportaron phishing</li>
+                <li>• Rendimiento por departamento</li>
+                <li>• Módulos con mayor dificultad</li>
                 <li>• Tasa de mejora post-capacitación</li>
-                <li>• Comparativa por departamento</li>
+                <li>• Comparativa histórica</li>
               </ul>
             </div>
           </div>

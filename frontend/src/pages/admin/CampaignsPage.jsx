@@ -1,4 +1,5 @@
 import React from 'react';
+import { Megaphone } from 'lucide-react';
 
 export const CampaignsPage = () => {
   return (
@@ -19,7 +20,9 @@ export const CampaignsPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">📢</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Megaphone className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Supervisión de Campañas Globales</h3>
         <p className="text-gray-600 mb-4">
           Vista consolidada de todas las campañas de capacitación de tus clientes.
@@ -32,7 +35,7 @@ export const CampaignsPage = () => {
             <li>• Monitoreo en tiempo real de WhatsApp</li>
             <li>• Estadísticas de efectividad por industria</li>
             <li>• Alertas de campañas con problemas</li>
-            <li>• Integración con simulaciones de phishing</li>
+            <li>• Reportes de progreso y análisis</li>
           </ul>
         </div>
       </div>

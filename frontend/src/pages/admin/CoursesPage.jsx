@@ -6,6 +6,7 @@ import {
   deleteCourse,
   sendCourseViaWhatsApp,
 } from '../../services/coursesService';
+import { BookOpen, Plus, Send, Edit2, Trash2, Clock, Users as UsersIcon } from 'lucide-react';
 
 export const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -160,9 +161,7 @@ export const CoursesPage = () => {
           onClick={handleCreateCourse}
           className="bg-primary-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
         >
-          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
+          <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="hidden sm:inline">Nuevo Curso</span>
           <span className="sm:hidden">Nuevo</span>
         </button>
@@ -234,7 +233,9 @@ export const CoursesPage = () => {
         </div>
       ) : courses.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-          <div className="text-5xl mb-4">📚</div>
+          <div className="mb-4">
+            <BookOpen className="w-16 h-16 text-gray-400 mx-auto" />
+          </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay cursos disponibles</h3>
           <p className="text-gray-600 mb-4">Crea tu primer curso para comenzar</p>
           <button
@@ -256,7 +257,7 @@ export const CoursesPage = () => {
                 {course.thumbnailUrl ? (
                   <img src={course.thumbnailUrl} alt={course.title} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="text-6xl">📚</div>
+                  <BookOpen className="w-16 h-16 text-white" />
                 )}
               </div>
 
@@ -272,25 +273,11 @@ export const CoursesPage = () => {
 
                 <div className="flex items-center gap-4 text-xs text-gray-500 mb-3">
                   <span className="flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <Clock className="w-4 h-4" />
                     {course.durationMinutes} min
                   </span>
                   <span className="flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
+                    <UsersIcon className="w-4 h-4" />
                     {course.enrolledCount || 0} inscritos
                   </span>
                 </div>
@@ -312,41 +299,20 @@ export const CoursesPage = () => {
                     onClick={() => handleSendCourse(course)}
                     className="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center gap-1"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                      />
-                    </svg>
+                    <Send className="w-4 h-4" />
                     Enviar
                   </button>
                   <button
                     onClick={() => handleEditCourse(course)}
                     className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
-                    <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                      />
-                    </svg>
+                    <Edit2 className="w-4 h-4 text-gray-600" />
                   </button>
                   <button
                     onClick={() => handleDeleteCourse(course._id)}
                     className="px-3 py-2 border border-red-300 rounded-lg hover:bg-red-50 transition-colors"
                   >
-                    <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
+                    <Trash2 className="w-4 h-4 text-red-600" />
                   </button>
                 </div>
               </div>

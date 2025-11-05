@@ -1,4 +1,5 @@
 import React from 'react';
+import { Megaphone } from 'lucide-react';
 
 export const ClientCampaignsPage = () => {
   return (
@@ -19,7 +20,9 @@ export const ClientCampaignsPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">📢</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Megaphone className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Campañas de Capacitación WhatsApp</h3>
         <p className="text-gray-600 mb-4">
           Crea campañas personalizadas para capacitar a tus empleados en ciberseguridad.
@@ -39,7 +42,7 @@ export const ClientCampaignsPage = () => {
             <ul className="text-purple-700 text-sm">
               <li>• Módulos educativos interactivos</li>
               <li>• Cuestionarios de evaluación</li>
-              <li>• Simulación de phishing con Gophish</li>
+              <li>• Contenido práctico y ejemplos reales</li>
               <li>• Reportes de completación y resultados</li>
             </ul>
           </div>

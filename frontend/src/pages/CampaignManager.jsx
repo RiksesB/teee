@@ -192,7 +192,7 @@ export function CampaignManager() {
               className="input-field"
             >
               <option value="1">Módulo 1 - Seguridad Básica</option>
-              <option value="2">Módulo 2 - Phishing</option>
+              <option value="2">Módulo 2 - Amenazas Digitales</option>
               <option value="3">Módulo 3 - Contraseñas</option>
               <option value="4">Módulo 4 - Redes Sociales</option>
             </select>
@@ -296,7 +296,7 @@ export function CampaignManager() {
                       className="input-field"
                     >
                       <option value="1">Módulo 1 - Seguridad Básica</option>
-                      <option value="2">Módulo 2 - Phishing</option>
+                      <option value="2">Módulo 2 - Amenazas Digitales</option>
                       <option value="3">Módulo 3 - Contraseñas</option>
                       <option value="4">Módulo 4 - Redes Sociales</option>
                     </select>

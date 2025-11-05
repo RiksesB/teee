@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { BookOpen } from 'lucide-react';
 
 export const CoursesTab = () => {
   const [courses, setCourses] = useState([]);
@@ -188,8 +189,8 @@ export const CoursesTab = () => {
           {courses.map((course) => (
             <div key={course._id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow bg-white">
               <div className="flex items-start justify-between mb-3">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-2xl">
-                  📚
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center text-primary-600">
+                  <BookOpen className="w-6 h-6" />
                 </div>
               </div>
               <h4 className="font-semibold text-gray-900 mb-2">{course.title}</h4>

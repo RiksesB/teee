@@ -1,4 +1,5 @@
 import React from 'react';
+import { Ticket } from 'lucide-react';
 
 export const ClientLicensesPage = () => {
   return (
@@ -19,10 +20,12 @@ export const ClientLicensesPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">🎫</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <Ticket className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Sistema de Créditos por Empleado</h3>
         <p className="text-gray-600 mb-4">
-          Compra créditos para capacitar a tu equipo. Cada crédito incluye curso completo + simulación de phishing.
+          Compra créditos para capacitar a tu equipo. Cada crédito incluye curso completo de ciberseguridad.
         </p>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-left">
           <h4 className="font-medium text-green-900 mb-2">Paquetes disponibles:</h4>
@@ -33,7 +36,7 @@ export const ClientLicensesPage = () => {
               <p className="text-green-700">$299 USD / Bs. 11,000 VES</p>
             </div>
             <div className="bg-white p-4 rounded-lg border-2 border-green-400">
-              <h5 className="font-semibold text-green-800">Paquete Pro ⭐</h5>
+              <h5 className="font-semibold text-green-800">Paquete Pro (Recomendado)</h5>
               <p className="text-2xl font-bold text-green-600">100 créditos</p>
               <p className="text-green-700">$549 USD / Bs. 20,000 VES</p>
             </div>

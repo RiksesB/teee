@@ -1,4 +1,5 @@
 import React from 'react';
+import { TrendingUp } from 'lucide-react';
 
 export const ReportsPage = () => {
   return (
@@ -27,7 +28,9 @@ export const ReportsPage = () => {
 
       {/* Content */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-150 p-8 text-center">
-        <div className="text-6xl mb-4">📈</div>
+        <div className="text-primary-600 flex justify-center mb-4">
+          <TrendingUp className="w-16 h-16" />
+        </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">Analíticas Globales y Reportes</h3>
         <p className="text-gray-600 mb-4">
           Insights detallados sobre el rendimiento de la plataforma y métricas clave del negocio.
