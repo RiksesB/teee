@@ -20,7 +20,6 @@ import './LandingPage.css';
 
 export const LandingPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [isCardFlipped, setIsCardFlipped] = React.useState(false);
   const [contactForm, setContactForm] = React.useState({
     name: '',
     email: '',
@@ -252,7 +251,7 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature 1 */}
             <div className="feature-card bg-gradient-to-br from-primary-50 to-white p-8 rounded-2xl border border-primary-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-primary-600 rounded-xl flex items-center justify-center mb-6">
@@ -305,7 +304,7 @@ export const LandingPage = () => {
               </p>
             </div>
 
-            {/* Feature 6 */}
+            {/* Feature 5 */}
             <div className="feature-card bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 hover:shadow-xl transition-shadow">
               <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
                 <Shield className="w-7 h-7 text-white" />
@@ -315,6 +314,19 @@ export const LandingPage = () => {
               </h3>
               <p className="text-gray-600">
                 Tus datos son tuyos. No compartimos, no vendemos información. Punto.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="feature-card bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100 hover:shadow-xl transition-shadow">
+              <div className="w-14 h-14 bg-green-600 rounded-xl flex items-center justify-center mb-6">
+                <CheckCircle className="w-7 h-7 text-white" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Contenido Actualizado
+              </h3>
+              <p className="text-gray-600">
+                Cursos constantemente actualizados con las últimas amenazas y mejores prácticas en ciberseguridad.
               </p>
             </div>
           </div>
@@ -394,158 +406,146 @@ export const LandingPage = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Precio Transparente
+              Sistema de Créditos
             </h2>
             <p className="text-xl text-gray-600">
-              Sin trucos, sin suscripciones ocultas
+              Compra créditos y úsalos cuando quieras. 1 crédito = 1 persona en 1 curso
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="w-full h-[500px] sm:h-[480px] md:h-[520px] lg:h-[550px] relative">
-              <div 
-                className={`relative w-full h-full transition-transform duration-700 transform-style-preserve-3d cursor-pointer ${
-                  isCardFlipped ? 'rotate-y-180' : ''
-                }`}
-                onClick={() => setIsCardFlipped(!isCardFlipped)}
-              >
-                
-                {/* Frente de la tarjeta */}
-                <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50 rounded-2xl border-2 border-blue-200 shadow-xl overflow-hidden">
-                  <div className="h-full flex flex-col justify-between p-4 sm:p-6 lg:p-8">
-                    <div className="flex justify-between items-start">
-                      <div></div>
-                      <div className="animate-bounce">
-                        <div className="bg-blue-500 text-white rounded-full p-2 shadow-lg">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              {/* Paquete Básico */}
+              <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl border-2 border-blue-200 shadow-lg p-8 hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Básico</h3>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-blue-600 mb-2">10 Créditos</div>
+                  <div className="text-gray-600">$5.99 por crédito</div>
+                  <div className="text-3xl font-bold text-gray-900 mt-2">$59.90</div>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">10 personas en cualquier curso</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Créditos no expiran</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Ideal para equipos pequeños</span>
+                  </li>
+                </ul>
+              </div>
 
-                    <div className="flex-1 flex flex-col justify-center min-h-0">
-                      <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 lg:mb-6 text-center">
-                        Por Persona
-                      </h3>
-                      
-                      <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8 mb-3 sm:mb-4 lg:mb-6">
-                        <div className="text-center">
-                          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600">$5.99</div>
-                          <div className="text-gray-600 font-medium text-sm sm:text-base">USD</div>
-                        </div>
-                        <div className="text-2xl sm:text-3xl text-gray-400 font-light">o</div>
-                        <div className="text-center">
-                          <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-blue-600">Bs. 220</div>
-                          <div className="text-gray-600 font-medium text-sm sm:text-base">VES</div>
-                        </div>
-                      </div>
-                      
-                      <p className="text-gray-600 text-center mb-4 sm:mb-6 lg:mb-8 text-sm sm:text-base px-2 sm:px-4">
-                        Solo pagas por quien capacitas
-                      </p>
+              {/* Paquete Profesional */}
+              <div className="bg-gradient-to-br from-green-50 to-white rounded-2xl border-2 border-green-500 shadow-xl p-8 transform scale-105 hover:shadow-2xl transition-all relative">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                  Más Popular
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Profesional</h3>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-green-600 mb-2">50 Créditos</div>
+                  <div className="text-gray-600">$5.49 por crédito</div>
+                  <div className="text-3xl font-bold text-gray-900 mt-2">$274.50</div>
+                  <div className="text-sm text-green-600 font-semibold">Ahorra $25</div>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">50 personas en cualquier curso</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Créditos no expiran</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Reportes detallados</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Soporte prioritario</span>
+                  </li>
+                </ul>
+              </div>
 
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 sm:p-4 lg:p-6 mx-auto w-full max-w-sm lg:max-w-md">
-                        <h4 className="font-bold text-gray-900 mb-2 sm:mb-3 lg:mb-4 flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg">
-                          <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
-                          Incluye
-                        </h4>
-                        <ul className="space-y-1.5 sm:space-y-2 lg:space-y-3">
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">1 curso completo vía WhatsApp</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">Contenido interactivo y práctico</span>
-                          </li>
-                          <li className="flex items-start gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-700 text-xs sm:text-sm lg:text-base">Reportes de progreso (si es para equipos)</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
+              {/* Paquete Empresarial */}
+              <div className="bg-gradient-to-br from-purple-50 to-white rounded-2xl border-2 border-purple-200 shadow-lg p-8 hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Empresarial</h3>
+                <div className="mb-6">
+                  <div className="text-4xl font-bold text-purple-600 mb-2">100+ Créditos</div>
+                  <div className="text-gray-600">Precio personalizado</div>
+                  <div className="text-3xl font-bold text-gray-900 mt-2">Cotizar</div>
+                </div>
+                <ul className="space-y-3 mb-6">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">100+ personas</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Descuentos por volumen</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Cuenta ejecutiva dedicada</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700 text-sm">Contenido personalizado</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
 
-                    <div className="flex justify-center mt-2 sm:mt-3 lg:mt-4">
-                      <p className="text-blue-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
-                        <ArrowRight className="w-4 h-4" />
-                        Haz clic para ver métodos de pago
-                      </p>
-                    </div>
+            {/* Método de pago */}
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl border-2 border-blue-200 shadow-lg p-8 max-w-2xl mx-auto">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-3">
+                  <DollarSign className="w-8 h-8 text-blue-600" />
+                  Método de Pago
+                </h3>
+                <p className="text-gray-600">Procesamiento seguro y confiable</p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 mb-6">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                    <DollarSign className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900">PayPal</h4>
+                    <p className="text-gray-600 text-sm">Pago instantáneo y seguro</p>
                   </div>
                 </div>
+                <ul className="space-y-2 text-sm text-gray-600">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>Procesamiento automático</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>Créditos disponibles inmediatamente</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span>Protección al comprador</span>
+                  </li>
+                </ul>
+              </div>
 
-                {/* Reverso de la tarjeta */}
-                <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-green-50 via-white to-blue-50 rounded-2xl border-2 border-green-200 shadow-xl overflow-hidden">
-                  <div className="h-full flex flex-col justify-between p-6 sm:p-8">
-                    <div className="flex justify-between items-start">
-                      <div className="animate-bounce">
-                        <div className="bg-green-500 text-white rounded-full p-2 shadow-lg">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div></div>
-                    </div>
-
-                    <div className="flex-1 flex flex-col justify-center">
-                      <h3 className="text-xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 flex items-center justify-center gap-3">
-                        <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
-                        <span className="text-center">Métodos de Pago</span>
-                      </h3>
-
-                      <div className="bg-white/70 backdrop-blur-sm rounded-xl p-4 sm:p-6 mx-auto w-full max-w-sm">
-                        <ul className="space-y-3 sm:space-y-4">
-                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-gray-900 font-semibold text-sm sm:text-base">PayPal</span>
-                              <p className="text-gray-600 text-xs">Procesamiento automático</p>
-                            </div>
-                          </li>
-                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-gray-900 font-semibold text-sm sm:text-base">Pago Móvil (Venezuela)</span>
-                              <p className="text-gray-600 text-xs">Verificación manual</p>
-                            </div>
-                          </li>
-                          <li className="flex items-center gap-3 p-2 sm:p-3 bg-white rounded-lg shadow-sm">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <span className="text-gray-900 font-semibold text-sm sm:text-base">Transferencia Bancaria</span>
-                              <p className="text-gray-600 text-xs">Todas las entidades</p>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="mt-4 sm:mt-6 flex justify-center">
-                        <a
-                          href="#contact"
-                          className="inline-block bg-green-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg hover:bg-green-700 transition-all font-medium text-sm sm:text-lg shadow-lg hover:shadow-xl"
-                        >
-                          Comenzar Ahora
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center">
-                      <p className="text-green-600 font-medium text-xs sm:text-sm animate-pulse flex items-center gap-2">
-                        <ArrowRight className="w-4 h-4 rotate-180" />
-                        Haz clic para volver
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              <div className="text-center">
+                <Link
+                  to="/login"
+                  className="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all font-medium text-lg shadow-lg hover:shadow-xl"
+                >
+                  Comprar Créditos
+                </Link>
+                <p className="text-sm text-gray-500 mt-3">
+                  ¿Necesitas otro método de pago? <a href="#contact" className="text-blue-600 hover:underline">Contáctanos</a>
+                </p>
               </div>
             </div>
           </div>
@@ -696,13 +696,6 @@ export const LandingPage = () => {
               </ul>
             </div>
 
-            <div>
-              <h4 className="font-bold mb-4">Legal</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Política de Privacidad</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Términos de Servicio</a></li>
-              </ul>
-            </div>
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">

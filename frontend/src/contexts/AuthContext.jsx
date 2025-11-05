@@ -102,10 +102,8 @@ export const AuthProvider = ({ children }) => {
       const response = await api.post('/auth/register', {
         email: userData.email,
         password: userData.password,
-        name: userData.contactName || userData.companyName,
-        companyName: userData.companyName,
-        phone: userData.phone,
-        employees: userData.employees,
+        name: userData.name,
+        companyName: userData.companyName || '',
       });
 
       if (response.data.success) {

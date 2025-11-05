@@ -2,20 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { NiblionLogo } from '../components/ui/Logo';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Eye, EyeOff } from 'lucide-react';
 
 export const Register = () => {
   const [formData, setFormData] = useState({
-    companyName: '',
-    contactName: '',
+    name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
-    employees: '',
-    industry: '',
-    acceptTerms: false
+    companyName: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -38,12 +36,6 @@ export const Register = () => {
 
     if (formData.password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres');
-      setLoading(false);
-      return;
-    }
-
-    if (!formData.acceptTerms) {
-      setError('Debes aceptar los términos y condiciones');
       setLoading(false);
       return;
     }
@@ -150,92 +142,53 @@ export const Register = () => {
               </div>
             )}
 
-            {/* Información de la Empresa */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              <div className="sm:col-span-2">
-                <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre de la Empresa *
-                </label>
-                <input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  required
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="Ej: TechCorp S.A."
-                />
-              </div>
+            {/* Información Personal */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                Nombre Completo *
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                placeholder="Tu nombre completo"
+              />
+            </div>
 
-              <div>
-                <label htmlFor="contactName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Persona de Contacto *
-                </label>
-                <input
-                  id="contactName"
-                  name="contactName"
-                  type="text"
-                  required
-                  value={formData.contactName}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="Tu nombre completo"
-                />
-              </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email *
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                placeholder="admin@tuempresa.com"
+              />
+            </div>
 
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Corporativo *
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="admin@tuempresa.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                  Teléfono *
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="+584121234567"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="employees" className="block text-sm font-medium text-gray-700 mb-2">
-                  Número de Empleados *
-                </label>
-                <select
-                  id="employees"
-                  name="employees"
-                  required
-                  value={formData.employees}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                >
-                  <option value="">Selecciona...</option>
-                  <option value="1-10">1-10 empleados</option>
-                  <option value="11-50">11-50 empleados</option>
-                  <option value="51-100">51-100 empleados</option>
-                  <option value="101-500">101-500 empleados</option>
-                  <option value="500+">Más de 500 empleados</option>
-                </select>
-              </div>
+            {/* Información de la Empresa (Opcional) */}
+            <div>
+              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700 mb-2">
+                Nombre de la Empresa (Opcional)
+              </label>
+              <input
+                id="companyName"
+                name="companyName"
+                type="text"
+                value={formData.companyName}
+                onChange={handleChange}
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                placeholder="Ej: TechCorp S.A."
+              />
             </div>
 
             {/* Contraseñas */}
@@ -244,56 +197,65 @@ export const Register = () => {
                 <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                   Contraseña *
                 </label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="Mínimo 6 caracteres"
-                />
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    placeholder="Mínimo 6 caracteres"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
                   Confirmar Contraseña *
                 </label>
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type="password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-                  placeholder="Repite la contraseña"
-                />
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                    placeholder="Repite la contraseña"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Términos y condiciones */}
-            <div className="flex items-start">
-              <input
-                id="acceptTerms"
-                name="acceptTerms"
-                type="checkbox"
-                checked={formData.acceptTerms}
-                onChange={handleChange}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded mt-1"
-              />
-              <label htmlFor="acceptTerms" className="ml-3 block text-sm text-gray-700">
-                Acepto los{' '}
-                <a href="#" className="text-primary-600 hover:text-primary-500 font-medium">
-                  términos y condiciones
-                </a>{' '}
-                y la{' '}
-                <a href="#" className="text-primary-600 hover:text-primary-500 font-medium">
-                  política de privacidad
-                </a>
-              </label>
-            </div>
+
 
             <button
               type="submit"
@@ -309,7 +271,7 @@ export const Register = () => {
                   Enviando solicitud...
                 </span>
               ) : (
-                'Enviar Solicitud de Registro'
+                'Registrarse'
               )}
             </button>
 
